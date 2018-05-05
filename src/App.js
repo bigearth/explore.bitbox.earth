@@ -98,9 +98,9 @@ class App extends Component {
             </div>
           </div>
           <Switch>
-            <Route path="/block" component={BlockPage}/>
-            <Route path="/address" component={AddressPage}/>
-            <Route path="/transaction" component={TransactionPage}/>
+            <Route path="/block/:id" component={BlockPage}/>
+            <Route path="/address/:id" component={AddressPage}/>
+            <Route path="/transaction/:id" component={TransactionPage}/>
             <Route exact path="/" component={Homepage}/>
             <Redirect from='*' to='/' />
           </Switch>

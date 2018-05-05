@@ -5,12 +5,32 @@ import {
   withRouter
 } from 'react-router-dom';
 import Slider from 'react-slick';
+let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
+let BITBOX = new BITBOXCli({
+  protocol: 'http',
+  host: '127.0.0.1',
+  port: 8332,
+  username: '',
+  password: '',
+  corsproxy: 'remote'
+});
 
 import "../styles/homepage.scss";
 
 class Block extends Component {
   componentDidMount() {
-    document.title = "BITBOX by EARTH - Supercharge your Bitcoin Cash workflow";
+
+    let id = this.props.match.params.id;
+    document.title = `Explore by BITBOX - Block ${id}`;
+    this.setState({
+      id: id
+    });
+
+    BITBOX.Block.details(id)
+    .then((result) => {
+      console.log(result);
+    }, (err) => { console.log(err);
+    });
   }
 
   render() {

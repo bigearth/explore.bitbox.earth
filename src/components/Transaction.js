@@ -8,7 +8,7 @@ import Slider from 'react-slick';
 
 import "../styles/homepage.scss";
 
-class Address extends Component {
+class Transaction extends Component {
   componentDidMount() {
     document.title = "BITBOX by EARTH - Supercharge your Bitcoin Cash workflow";
   }
@@ -26,9 +26,9 @@ class Address extends Component {
       <div>
         <div className="splash-container">
           <div className="splash">
-            <h1 className="splash-head">Address</h1>
+            <h1 className="splash-head">Transaction</h1>
             <p className="splash-subhead">
-              Bitcoin Cash Block Explorer by BITBOX.
+              Bitcoin Cash Transaction Explorer by BITBOX.
             </p>
             <p>
               <a href="https://github.com/bigearth/bitbox-gui/releases/download/0.7.8/BITBOX-0.7.8.dmg" className="pure-button pure-button-primary">
@@ -53,10 +53,10 @@ class Address extends Component {
                   <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
                     <p className="header-icon"><i className="fa fa-cube" /></p>
                     <h3 className="content-subhead">
-                      Instant Blockchain
+                      Instant Transactionchain
                     </h3>
                     <p>
-                      Your own Bitcoin Cash blockchain to configure however you choose. Execute commands from the command line and w/ web bindings.
+                      Your own Bitcoin Cash Transactionchain to configure however you choose. Execute commands from the command line and w/ web bindings.
                     </p>
                   </div>
                   <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
@@ -172,4 +172,4 @@ class Address extends Component {
   }
 }
 
-export default withRouter(Address);
+export default withRouter(Transaction);

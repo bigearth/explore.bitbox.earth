@@ -8,7 +8,7 @@ import Slider from 'react-slick';
 
 import "../styles/homepage.scss";
 
-class Address extends Component {
+class Block extends Component {
   componentDidMount() {
     document.title = "BITBOX by EARTH - Supercharge your Bitcoin Cash workflow";
   }
@@ -26,7 +26,7 @@ class Address extends Component {
       <div>
         <div className="splash-container">
           <div className="splash">
-            <h1 className="splash-head">Address</h1>
+            <h1 className="splash-head">Block</h1>
             <p className="splash-subhead">
               Bitcoin Cash Block Explorer by BITBOX.
             </p>
@@ -172,4 +172,4 @@ class Address extends Component {
   }
 }
 
-export default withRouter(Address);
+export default withRouter(Block);

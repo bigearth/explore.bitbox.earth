@@ -10,9 +10,10 @@ import {
 } from 'react-router-dom';
 
 // custom components
-import BitboxCli from './components/BitboxCli';
-import Docs from './components/Docs';
 import Homepage from './components/Homepage';
+import Block from './components/Block';
+import Address from './components/Address';
+import Transaction from './components/Transaction';
 
 // css
 import './styles/app.scss';
@@ -28,7 +29,6 @@ class App extends Component {
   }
 
   render() {
-
     const pathMatch = (match, location) => {
       if (!match) {
         return false
@@ -36,16 +36,23 @@ class App extends Component {
       return this.handlePathMatch(match.path);
     }
 
-    const DocsPage = (props) => {
+    const BlockPage = (props) => {
       return (
-        <Docs
+        <Block
         />
       );
     };
 
-    const BitboxCliPage = (props) => {
+    const AddressPage = (props) => {
       return (
-        <BitboxCli
+        <Address
+        />
+      );
+    };
+
+    const TransactionPage = (props) => {
+      return (
+        <Transaction
         />
       );
     };
@@ -65,8 +72,8 @@ class App extends Component {
                     isActive={pathMatch}
                     activeClassName="pure-menu-selected"
                     className="pure-menu-link"
-                    to="/docs/gettingstarted">
-                    <i className="fas fa-book"></i> Docs
+                    to="/block">
+                    <i className="fas fa-cube"></i> Block
                   </NavLink>
                 </li>
                 <li className="pure-menu-item">
@@ -74,23 +81,26 @@ class App extends Component {
                     isActive={pathMatch}
                     activeClassName="pure-menu-selected"
                     className="pure-menu-link"
-                    to="/bitboxcli/bitcoincash">
-                    <i className="fa fa-code"></i> bitbox-cli
+                    to="/address">
+                    <i className="fas fa-qrcode"></i> Address
                   </NavLink>
                 </li>
                 <li className="pure-menu-item">
-                  <a
+                  <NavLink
+                    isActive={pathMatch}
+                    activeClassName="pure-menu-selected"
                     className="pure-menu-link"
-                    href="https://bigearth.github.io/bitblog/">
-                    <i className="fas fa-keyboard"></i> Blog
-                  </a>
+                    to="/transaction">
+                    <i className="fas fa-exchange-alt"></i> Transaction
+                  </NavLink>
                 </li>
               </ul>
             </div>
           </div>
           <Switch>
-            <Route path="/docs" component={DocsPage}/>
-            <Route path="/bitboxcli" component={BitboxCliPage}/>
+            <Route path="/block" component={BlockPage}/>
+            <Route path="/address" component={AddressPage}/>
+            <Route path="/transaction" component={TransactionPage}/>
             <Route exact path="/" component={Homepage}/>
             <Redirect from='*' to='/' />
           </Switch>

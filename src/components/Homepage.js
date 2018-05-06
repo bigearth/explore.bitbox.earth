@@ -87,39 +87,6 @@ class Homepage extends Component {
           console.log('4', err);
         });
     }
-    // > "ca69d904c460403ac9d09b95cd838849487e5c735684c34fb7a276da0f86fb35".length
-    // 64
-    // let index;
-    // let result;
-    // if(searchTerm !== '') {
-    //   // first search by block index
-    //   result = underscore.findWhere(blockchain.chain, {index: +searchTerm});
-    //   if(!result) {
-    //     // next search by block header
-    //     result = underscore.findWhere(blockchain.chain, {header: searchTerm});
-    //   }
-    // }
-    //
-    // if(result) {
-    //   this.props.history.push(`/blocks/${result.index}`)
-    // // } else {
-    // //
-    // //   blockchain.chain.forEach((block) => {
-    // //     block.transactions.forEach((tx) => {
-    // //       // next search by tx hash and raw hex
-    // //       if(tx.hash === searchTerm || tx.rawHex === searchTerm) {
-    // //         result = tx;
-    // //         index = block.index;
-    // //       }
-    // //     })
-    // //   })
-    // //
-    // //   if(result) {
-    // //     console.log(`/blocks/${index}/transactions/${result.hash}`)
-    // //     this.props.history.push(`/blocks/${index}/transactions/${result.hash}`)
-    // //   }
-    // }
-    // this.props.resetValue();
     event.preventDefault();
   }
 
@@ -127,14 +94,14 @@ class Homepage extends Component {
     let blocks = [];
     if(this.state.blocks) {
       this.state.blocks.forEach((block, index) => {
-        blocks.push(<li key={index}>
+        blocks.push(
+          <li key={index}>
             <NavLink
               activeClassName="pure-menu-selected"
               className="pure-menu-link"
               to={`/block/${block.hash}`}>
               <i className="fas fa-cube"></i> Block: {block.height}
             </NavLink>
-
           </li>)
       });
     }
@@ -156,23 +123,21 @@ class Homepage extends Component {
         </div>
         <div className="content-wrapper">
           <div className="content features">
-              <h2 className="content-head is-center">Features</h2>
-
               <div className="pure-g">
                   <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
                     <p className="header-icon"><i className="fa fa-cubes" /></p>
-                    <h3 className="content-subhead">
+                    <h2 className="content-head">
                       Latest Blocks
-                    </h3>
+                    </h2>
                     <ul>
                       {blocks}
                     </ul>
                   </div>
                   <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
                     <p className="header-icon"><i className="fa fa-exchange-alt" /></p>
-                    <h3 className="content-subhead">
+                    <h2 className="content-head">
                       Latest Transactions
-                    </h3>
+                    </h2>
                   </div>
               </div>
           </div>

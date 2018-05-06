@@ -22,9 +22,14 @@ class Homepage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      blocks: []
+      blocks: [],
+      redirect: false,
+      blockIndex: null,
+      hash: null,
+      searchTerm: ''
     }
   }
+
   componentDidMount() {
     document.title = "BITBOX by EARTH - Supercharge your Bitcoin Cash workflow";
 
@@ -57,6 +62,67 @@ class Homepage extends Component {
     });
   }
 
+  handleInputChange(e) {
+    let value = e.target.value;
+    this.setState({
+      searchTerm: value
+    });
+  }
+
+  handleSubmit(searchTerm, event) {
+    if(searchTerm.length === 54 || searchTerm.length === 42 || searchTerm.length === 34) {
+        this.props.history.push(`/address/${searchTerm}`)
+    } else {
+        BITBOX.Blockchain.getBlockHash(searchTerm)
+        .then((result) => {
+          this.props.history.push(`/block/${searchTerm}`)
+        }, (err) => {
+          console.log('2', err);
+        });
+
+        BITBOX.Transaction.details(searchTerm)
+        .then((result) => {
+          this.props.history.push(`/transaction/${searchTerm}`)
+        }, (err) => {
+          console.log('4', err);
+        });
+    }
+    // > "ca69d904c460403ac9d09b95cd838849487e5c735684c34fb7a276da0f86fb35".length
+    // 64
+    // let index;
+    // let result;
+    // if(searchTerm !== '') {
+    //   // first search by block index
+    //   result = underscore.findWhere(blockchain.chain, {index: +searchTerm});
+    //   if(!result) {
+    //     // next search by block header
+    //     result = underscore.findWhere(blockchain.chain, {header: searchTerm});
+    //   }
+    // }
+    //
+    // if(result) {
+    //   this.props.history.push(`/blocks/${result.index}`)
+    // // } else {
+    // //
+    // //   blockchain.chain.forEach((block) => {
+    // //     block.transactions.forEach((tx) => {
+    // //       // next search by tx hash and raw hex
+    // //       if(tx.hash === searchTerm || tx.rawHex === searchTerm) {
+    // //         result = tx;
+    // //         index = block.index;
+    // //       }
+    // //     })
+    // //   })
+    // //
+    // //   if(result) {
+    // //     console.log(`/blocks/${index}/transactions/${result.hash}`)
+    // //     this.props.history.push(`/blocks/${index}/transactions/${result.hash}`)
+    // //   }
+    // }
+    // this.props.resetValue();
+    event.preventDefault();
+  }
+
   render() {
     let blocks = [];
     if(this.state.blocks) {
@@ -80,6 +146,12 @@ class Homepage extends Component {
             <p className="splash-subhead">
               Bitcoin Cash Block Explorer by BITBOX.
             </p>
+            <span className="input-icon-wrap">
+              <form onSubmit={this.handleSubmit.bind(this, this.state.searchTerm)}>
+                <input id="form-name" onChange={this.handleInputChange.bind(this)} value={this.state.searchTerm} placeholder="SEARCH BLOCK/ADDRESS/TRANSACTION" type="text" className="pure-input-rounded input-with-icon" />
+              </form>
+              <span className="input-icon"><i className="fas fa-search" /></span>
+            </span>
           </div>
         </div>
         <div className="content-wrapper">

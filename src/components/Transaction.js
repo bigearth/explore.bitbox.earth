@@ -8,11 +8,11 @@ import Slider from 'react-slick';
 let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
 let BITBOX = new BITBOXCli({
   protocol: 'http',
-  host: '127.0.0.1',
-  port: 8332,
-  username: '',
-  password: '',
-  corsproxy: 'remote'
+  host: "138.68.54.100",
+  port: "8332",
+  username: "bitcoin",
+  password: "xhFjluMJMyOXcYvF",
+  corsproxy: "remote"
 });
 
 import "../styles/homepage.scss";

@@ -8,11 +8,11 @@ import Slider from 'react-slick';
 let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
 let BITBOX = new BITBOXCli({
   protocol: 'http',
-  host: '127.0.0.1',
-  port: 8332,
-  username: '',
-  password: '',
-  corsproxy: 'remote'
+  host: "138.68.54.100",
+  port: "8332",
+  username: "bitcoin",
+  password: "xhFjluMJMyOXcYvF",
+  corsproxy: "remote"
 });
 
 import "../styles/homepage.scss";
@@ -32,30 +32,59 @@ class Block extends Component {
       id: id
     });
 
-    BITBOX.Block.details(id)
-    .then((result) => {
-      console.log(result);
-      this.setState({
-        bits: result.bits,
-        chainwork: result.chainwork,
-        confirmations: result.confirmations,
-        difficulty: result.difficulty,
-        hash: result.hash,
-        height: result.height,
-        isMainChain: result.isMainChain,
-        merkleroot: result.merkleroot,
-        nextblockhash: result.nextblockhash,
-        nonce: result.nonce,
-        // poolInfo: result.poolInfo,
-        previousblockhash: result.previousblockhash,
-        reward: result.reward,
-        size: result.size,
-        time: result.time,
-        length: result.length,
-        version: result.version,
+    if(id.length !== 64) {
+      BITBOX.Blockchain.getBlockHash(id)
+      .then((result) => {
+        BITBOX.Block.details(result)
+        .then((result) => {
+          this.setState({
+            bits: result.bits,
+            chainwork: result.chainwork,
+            confirmations: result.confirmations,
+            difficulty: result.difficulty,
+            hash: result.hash,
+            height: result.height,
+            isMainChain: result.isMainChain,
+            merkleroot: result.merkleroot,
+            nextblockhash: result.nextblockhash,
+            nonce: result.nonce,
+            // poolInfo: result.poolInfo,
+            previousblockhash: result.previousblockhash,
+            reward: result.reward,
+            size: result.size,
+            time: result.time,
+            length: result.length,
+            version: result.version,
+          });
+        }, (err) => { console.log(err);
+        });
+      }, (err) => { console.log(err);
       });
-    }, (err) => { console.log(err);
-    });
+    } else {
+      BITBOX.Block.details(id)
+      .then((result) => {
+        this.setState({
+          bits: result.bits,
+          chainwork: result.chainwork,
+          confirmations: result.confirmations,
+          difficulty: result.difficulty,
+          hash: result.hash,
+          height: result.height,
+          isMainChain: result.isMainChain,
+          merkleroot: result.merkleroot,
+          nextblockhash: result.nextblockhash,
+          nonce: result.nonce,
+          // poolInfo: result.poolInfo,
+          previousblockhash: result.previousblockhash,
+          reward: result.reward,
+          size: result.size,
+          time: result.time,
+          length: result.length,
+          version: result.version,
+        });
+      }, (err) => { console.log(err);
+      });
+    }
   }
 
   render() {

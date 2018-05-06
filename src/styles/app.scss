@@ -483,9 +483,14 @@ a.pure-button-primary {
 
 .Block, .Address, .Transaction {
   color: $darkGrey;
-  padding-top: 150px;
+  padding-top: 125px;
 }
 
 .header .l-box {
   padding: 0em;
+}
+
+h2.l-box {
+  margin: 0;
+  padding-bottom: 0;
 }

@@ -65,9 +65,9 @@ class Address extends Component {
 
     return (
       <div className='Address'>
-        <h2><i className="fas fa-qrcode" /> Address {this.state.id}</h2>
+        <h2 className='l-box'><i className="fas fa-qrcode" /> Address {this.state.id}</h2>
         <div className="pure-g">
-          <div className="pure-u-1-2">
+          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             {cashAddr}
             {legacy}
             <p>balance: {this.state.balance}</p>
@@ -75,7 +75,7 @@ class Address extends Component {
             <p>totalReceived: {this.state.totalReceived}</p>
             <p>totalSent: {this.state.totalSent}</p>
           </div>
-          <div className="pure-u-1-2">
+          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             {transactions}
             <p>unconfirmedBalance: {this.state.unconfirmedBalance}</p>
             <p>unconfirmedTxApperances: {this.state.unconfirmedTxApperances}</p>

@@ -81,11 +81,6 @@ class Address extends Component {
             <p>unconfirmedTxApperances: {this.state.unconfirmedTxApperances}</p>
           </div>
         </div>
-        <div className="content-wrapper">
-          <div className="footer l-box is-center">
-            Created w/ ❤️ on EARTH by <a href='https://twitter.com/bitboxearth'>@bitboxearth</a>. Donations <strong>bitcoincash:qpcxf2sv9hjw08nvpgffpamfus9nmksm3chv5zqtnz</strong>
-          </div>
-        </div>
       </div>
     );
   }

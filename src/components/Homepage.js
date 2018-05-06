@@ -8,6 +8,7 @@ import {
 import Slider from 'react-slick';
 
 import "../styles/homepage.scss";
+import Footer from './Footer';
 
 class Homepage extends Component {
   constructor(props) {
@@ -101,7 +102,7 @@ class Homepage extends Component {
           //     </div>
           //   </div>
           // </div>
-          
+
     let blocks = [];
     if(this.state.blocks) {
       this.state.blocks.forEach((block, index) => {
@@ -132,11 +133,7 @@ class Homepage extends Component {
             </span>
           </div>
         </div>
-        <div className="content-wrapper">
-          <div className="footer l-box is-center">
-            Created w/ ❤️ on EARTH by <a href='https://twitter.com/bitboxearth'>@bitboxearth</a>. Donations <strong>bitcoincash:qzs02v05l7qs5s24srqju498qu55dwuj0cx5ehjm2c</strong>
-          </div>
-        </div>
+        <Footer />
       </div>
     );
   }

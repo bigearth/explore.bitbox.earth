@@ -127,11 +127,6 @@ class Block extends Component {
             <p><i className="far fa-calendar-alt" /> Time: {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
           </div>
         </div>
-        <div className="content-wrapper">
-          <div className="footer l-box is-center">
-            Created w/ ❤️ on EARTH by <a href='https://twitter.com/bitboxearth'>@bitboxearth</a>. Donations <strong>bitcoincash:qpcxf2sv9hjw08nvpgffpamfus9nmksm3chv5zqtnz</strong>
-          </div>
-        </div>
       </div>
     );
   }

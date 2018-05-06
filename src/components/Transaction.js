@@ -5,15 +5,6 @@ import {
   withRouter
 } from 'react-router-dom';
 import Slider from 'react-slick';
-let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
-let BITBOX = new BITBOXCli({
-  protocol: 'https',
-  host: "138.68.54.100",
-  port: "8332",
-  username: "bitcoin",
-  password: "xhFjluMJMyOXcYvF",
-  corsproxy: "remote"
-});
 
 import "../styles/homepage.scss";
 
@@ -32,7 +23,7 @@ class Transaction extends Component {
       id: id
     });
 
-    BITBOX.Transaction.details(id)
+    this.props.bitbox.Transaction.details(id)
     .then((result) => {
       this.setState({
         blockhash: result.blockhash,

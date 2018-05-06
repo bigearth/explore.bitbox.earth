@@ -5,15 +5,6 @@ import {
   withRouter
 } from 'react-router-dom';
 import Slider from 'react-slick';
-let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
-let BITBOX = new BITBOXCli({
-  protocol: 'https',
-  host: "138.68.54.100",
-  port: "8332",
-  username: "bitcoin",
-  password: "xhFjluMJMyOXcYvF",
-  corsproxy: "remote"
-});
 
 import "../styles/homepage.scss";
 
@@ -27,15 +18,15 @@ class Block extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    document.title = `Block ${id} - Explore by BITBOX`;
+    document.title = `Block ${id} - Explore by this.props.bitbox`;
     this.setState({
       id: id
     });
 
     if(id.length !== 64) {
-      BITBOX.Blockchain.getBlockHash(id)
+      this.props.bitbox.Blockchain.getBlockHash(id)
       .then((result) => {
-        BITBOX.Block.details(result)
+        this.props.bitbox.Block.details(result)
         .then((result) => {
           this.setState({
             bits: result.bits,
@@ -61,7 +52,7 @@ class Block extends Component {
       }, (err) => { console.log(err);
       });
     } else {
-      BITBOX.Block.details(id)
+      this.props.bitbox.Block.details(id)
       .then((result) => {
         this.setState({
           bits: result.bits,

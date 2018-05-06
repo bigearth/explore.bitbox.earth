@@ -6,15 +6,6 @@ import {
   withRouter
 } from 'react-router-dom';
 import Slider from 'react-slick';
-let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
-let BITBOX = new BITBOXCli({
-  protocol: 'https',
-  host: "138.68.54.100",
-  port: "8332",
-  username: "bitcoin",
-  password: "xhFjluMJMyOXcYvF",
-  corsproxy: "remote"
-});
 
 import "../styles/homepage.scss";
 
@@ -33,15 +24,15 @@ class Homepage extends Component {
   componentDidMount() {
     document.title = "BITBOX by EARTH - Supercharge your Bitcoin Cash workflow";
 
-    BITBOX.Blockchain.getBlockCount()
+    this.props.bitbox.Blockchain.getBlockCount()
     .then((result) => {
       for(let i = result; i >= (result - 10); i--) {
-        BITBOX.Blockchain.getBlockHash(i)
+        this.props.bitbox.Blockchain.getBlockHash(i)
         .then((result) => {
-          BITBOX.Block.details(result)
+          this.props.bitbox.Block.details(result)
           .then((result) => {
             if(i === result) {
-              BITBOX.Transaction.details(block.hash)
+              this.props.bitbox.Transaction.details(block.hash)
               .then((result) => {
                 console.log(result)
               }, (err) => { console.log(err);
@@ -73,14 +64,14 @@ class Homepage extends Component {
     if(searchTerm.length === 54 || searchTerm.length === 42 || searchTerm.length === 34) {
         this.props.history.push(`/address/${searchTerm}`)
     } else {
-        BITBOX.Blockchain.getBlockHash(searchTerm)
+        this.props.bitbox.Blockchain.getBlockHash(searchTerm)
         .then((result) => {
           this.props.history.push(`/block/${searchTerm}`)
         }, (err) => {
           console.log('2', err);
         });
 
-        BITBOX.Transaction.details(searchTerm)
+        this.props.bitbox.Transaction.details(searchTerm)
         .then((result) => {
           this.props.history.push(`/transaction/${searchTerm}`)
         }, (err) => {

@@ -44,22 +44,25 @@ class Transaction extends Component {
 
   render() {
     return (
-      <div>
-        <div className="splash-container">
-          <div className="splash">
+      <div className='Transaction'>
+        <div className="pure-g">
+          <div className="pure-u-1-2">
             <p>blockhash: {this.state.blockhash}</p>
             <p>blockheight: {this.state.blockheight}</p>
             <p>blocktime: {this.state.blocktime}</p>
             <p>confirmations: {this.state.confirmations}</p>
             <p>isCoinBase: {this.state.isCoinBase}</p>
             <p>locktime: {this.state.locktime}</p>
+          </div>
+          <div className="pure-u-1-2">
             <p>size: {this.state.size}</p>
             <p>time: {this.state.time}</p>
             <p>txid: {this.state.txid}</p>
             <p>valueOut: {this.state.valueOut}</p>
             <p>version: {this.state.version}</p>
           </div>
-
+        </div>
+        <div className="content-wrapper">
           <div className="footer l-box is-center">
             Created w/ ❤️ on EARTH by <a href='https://twitter.com/bitboxearth'>@bitboxearth</a>. Donations <strong>bitcoincash:qpcxf2sv9hjw08nvpgffpamfus9nmksm3chv5zqtnz</strong>
           </div>

@@ -55,9 +55,9 @@ class Address extends Component {
 
   render() {
     return (
-      <div>
-        <div className="splash-container">
-          <div className="splash">
+      <div className='Address'>
+        <div className="pure-g">
+          <div className="pure-u-1-2">
             <p>addrStr: {this.state.addrStr}</p>
             <p>balance: {this.state.balance}</p>
             <p>balanceSat: {this.state.balanceSat}</p>
@@ -65,6 +65,8 @@ class Address extends Component {
             <p>totalReceivedSat: {this.state.totalReceivedSat}</p>
             <p>totalSent: {this.state.totalSent}</p>
             <p>totalSentSat: {this.state.totalSentSat}</p>
+          </div>
+          <div className="pure-u-1-2">
             <p>transactions: {this.state.transactions}</p>
             <p>txApperances: {this.state.txApperances}</p>
             <p>unconfirmedBalance: {this.state.unconfirmedBalance}</p>

@@ -80,9 +80,9 @@ class Block extends Component {
 
   render() {
     return (
-      <div>
-        <div className="splash-container">
-          <div className="splash">
+      <div className='Block'>
+        <div className="pure-g">
+          <div className="pure-u-1-2">
             <p>Bits: {this.state.bits}</p>
             <p>Chainwork: {this.state.chainwork}</p>
             <p>Confirmations: {this.state.confirmations}</p>
@@ -91,6 +91,8 @@ class Block extends Component {
             <p>Height: {this.state.height}</p>
             <p>IsMainChain: {this.state.isMainChain}</p>
             <p>Merkleroot: {this.state.merkleroot}</p>
+          </div>
+          <div className="pure-u-1-2">
             <p>Nextblockhash: {this.state.nextblockhash}</p>
             <p>Nonce: {this.state.nonce}</p>
             <p>PoolInfo: {this.state.poolInfo}</p>
@@ -101,7 +103,8 @@ class Block extends Component {
             <p>Tx: {this.state.tx.length}</p>
             <p>Version: {this.state.version}</p>
           </div>
-
+        </div>
+        <div className="content-wrapper">
           <div className="footer l-box is-center">
             Created w/ ❤️ on EARTH by <a href='https://twitter.com/bitboxearth'>@bitboxearth</a>. Donations <strong>bitcoincash:qpcxf2sv9hjw08nvpgffpamfus9nmksm3chv5zqtnz</strong>
           </div>

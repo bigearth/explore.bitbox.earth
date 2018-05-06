@@ -30,6 +30,9 @@ class Menu extends Component {
     } else {
         this.props.bitbox.Blockchain.getBlockHash(searchTerm)
         .then((result) => {
+          this.setState({
+            searchTerm: ''
+          });
           this.props.history.push(`/block/${searchTerm}`)
         }, (err) => {
           console.log('2', err);
@@ -37,6 +40,9 @@ class Menu extends Component {
 
         this.props.bitbox.Transaction.details(searchTerm)
         .then((result) => {
+          this.setState({
+            searchTerm: ''
+          });
           this.props.history.push(`/transaction/${searchTerm}`)
         }, (err) => {
           console.log('4', err);

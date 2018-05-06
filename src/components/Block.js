@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {
+  NavLink,
   Link,
   withRouter
 } from 'react-router-dom';
@@ -12,7 +13,8 @@ class Block extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tx: []
+      tx: [],
+      id: null
     };
   }
 
@@ -23,11 +25,26 @@ class Block extends Component {
       id: id
     });
 
+    this.fetchData(id);
+  }
+
+  componentWillReceiveProps(props) {
+    let id = props.match.params.id;
+    document.title = `Block ${id} - Explore by this.props.bitbox`;
+    this.setState({
+      id: id
+    });
+
+    this.fetchData(id);
+  }
+
+  fetchData(id) {
     if(id.length !== 64) {
       this.props.bitbox.Blockchain.getBlockHash(id)
       .then((result) => {
         this.props.bitbox.Block.details(result)
         .then((result) => {
+          // console.log(result)
           this.setState({
             bits: result.bits,
             chainwork: result.chainwork,
@@ -76,6 +93,7 @@ class Block extends Component {
       }, (err) => { console.log(err);
       });
     }
+
   }
 
   render() {
@@ -83,25 +101,29 @@ class Block extends Component {
       <div className='Block'>
         <div className="pure-g">
           <div className="pure-u-1-2">
-            <p>Bits: {this.state.bits}</p>
-            <p>Chainwork: {this.state.chainwork}</p>
             <p>Confirmations: {this.state.confirmations}</p>
             <p>Difficulty: {this.state.difficulty}</p>
             <p>Hash: {this.state.hash}</p>
             <p>Height: {this.state.height}</p>
-            <p>IsMainChain: {this.state.isMainChain}</p>
-            <p>Merkleroot: {this.state.merkleroot}</p>
           </div>
           <div className="pure-u-1-2">
-            <p>Nextblockhash: {this.state.nextblockhash}</p>
-            <p>Nonce: {this.state.nonce}</p>
+            <p>next:
+              <Link
+                to={`/block/${this.state.nextblockhash}`}>
+                <i className="fa fa-code"></i> {this.state.nextblockhash}
+              </Link>
+            </p>
             <p>PoolInfo: {this.state.poolInfo}</p>
-            <p>Previousblockhash: {this.state.previousblockhash}</p>
+            <p>previous:
+              <Link
+                to={`/block/${this.state.previousblockhash}`}>
+                <i className="fa fa-code"></i> {this.state.previousblockhash}
+              </Link>
+            </p>
             <p>Reward: {this.state.reward}</p>
             <p>Size: {this.state.size}</p>
             <p>Time: {this.state.time}</p>
             <p>Tx: {this.state.tx.length}</p>
-            <p>Version: {this.state.version}</p>
           </div>
         </div>
         <div className="content-wrapper">

@@ -46,7 +46,6 @@ class App extends Component {
       return this.handlePathMatch(match.path);
     }
 
-
     const BlockPage = (props) => {
       return (
         <Block
@@ -79,12 +78,19 @@ class App extends Component {
       );
     };
 
+    const MenuPage = (props) => {
+      return (
+        <Menu
+          bitbox={BITBOX}
+          match={props.match}
+        />
+      );
+    };
+
     return (
       <Router>
         <div>
-          <Menu
-            bitbox={BITBOX}
-          />
+          <MenuPage />
           <Switch>
             <Route path="/block/:id" component={BlockPage}/>
             <Route path="/address/:id" component={AddressPage}/>

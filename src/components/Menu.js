@@ -7,13 +7,20 @@ import {
 } from 'react-router-dom';
 import Slider from 'react-slick';
 
-import "../styles/Homepage.scss";
+import "../styles/homepage.scss";
 
 class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: ''
+      searchTerm: '',
+      showSearch: true
+    }
+
+    if(props.location.pathname === '/') {
+      this.setState({
+        showSearch: false
+      });
     }
   }
 
@@ -22,6 +29,26 @@ class Menu extends Component {
     this.setState({
       searchTerm: value
     });
+  }
+
+  componentDidMount() {
+    if(this.props.location.pathname === '/') {
+      this.setState({
+        showSearch: false
+      });
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    if(props.location.pathname === '/') {
+      this.setState({
+        showSearch: false
+      });
+    } else {
+      this.setState({
+        showSearch: true
+      });
+    }
   }
 
   handleSubmit(searchTerm, event) {
@@ -63,9 +90,22 @@ class Menu extends Component {
               to={`/block/${block.hash}`}>
               <i className="fas fa-cube"></i> Block: {block.height}
             </NavLink>
-          </li>)
+          </li>
+        )
       });
     }
+    let search;
+    if(this.state.showSearch) {
+      search = <div className="l-box pure-u-1 pure-u-md-1-3 pure-u-lg-1-3">
+        <span className="input-icon-wrap">
+          <form onSubmit={this.handleSubmit.bind(this, this.state.searchTerm)}>
+            <input id="form-name" onChange={this.handleInputChange.bind(this)} value={this.state.searchTerm} placeholder="SEARCH BLOCK/ADDRESS/TRANSACTION" type="text" className="pure-input-rounded input-with-icon" />
+          </form>
+          <span className="input-icon"><i className="fas fa-search" /></span>
+        </span>
+      </div>
+    }
+
     return (
       <div className="header">
         <div className="home-menu main-menu pure-menu pure-menu-horizontal pure-menu-fixed">
@@ -75,14 +115,7 @@ class Menu extends Component {
                 <img src={'/assets/logo.png'} /> <br />BitBox
               </Link>
             </div>
-            <div className="l-box pure-u-1 pure-u-md-1-3 pure-u-lg-1-3">
-              <span className="input-icon-wrap">
-                <form onSubmit={this.handleSubmit.bind(this, this.state.searchTerm)}>
-                  <input id="form-name" onChange={this.handleInputChange.bind(this)} value={this.state.searchTerm} placeholder="SEARCH BLOCK/ADDRESS/TRANSACTION" type="text" className="pure-input-rounded input-with-icon" />
-                </form>
-                <span className="input-icon"><i className="fas fa-search" /></span>
-              </span>
-            </div>
+            {search}
           </div>
         </div>
       </div>

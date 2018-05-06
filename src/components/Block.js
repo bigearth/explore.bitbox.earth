@@ -7,7 +7,7 @@ import {
 import Slider from 'react-slick';
 let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
 let BITBOX = new BITBOXCli({
-  protocol: 'http',
+  protocol: 'https',
   host: "138.68.54.100",
   port: "8332",
   username: "bitcoin",

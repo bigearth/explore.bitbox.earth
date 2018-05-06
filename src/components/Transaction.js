@@ -43,23 +43,26 @@ class Transaction extends Component {
   }
 
   render() {
+    let coinbase;
+    if(this.state.isCoinBase) {
+      coinbase = <p><i className="fab fa-bitcoin" /> coinbase</p>
+    }
+
     return (
       <div className='Transaction'>
+        <h2><i className="fas fa-exchange-alt" /> Transaction {this.state.id}</h2>
         <div className="pure-g">
           <div className="pure-u-1-2">
-            <p>blockhash: {this.state.blockhash}</p>
-            <p>blockheight: {this.state.blockheight}</p>
-            <p>blocktime: {this.state.blocktime}</p>
-            <p>confirmations: {this.state.confirmations}</p>
-            <p>isCoinBase: {this.state.isCoinBase}</p>
-            <p>locktime: {this.state.locktime}</p>
+            <p><i className="fas fa-cube" /> blockhash: {this.state.blockhash}</p>
+            <p><i className="fas fa-cubes" /> blockheight: {this.state.blockheight}</p>
+            <p><i className="far fa-check-square" /> confirmations: {this.state.confirmations}</p>
+            {coinbase}
           </div>
           <div className="pure-u-1-2">
-            <p>size: {this.state.size}</p>
-            <p>time: {this.state.time}</p>
-            <p>txid: {this.state.txid}</p>
-            <p>valueOut: {this.state.valueOut}</p>
-            <p>version: {this.state.version}</p>
+            <p><i className="far fa-file" /> Size: {this.state.size}</p>
+            <p><i className="far fa-calendar-alt" /> Time: {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
+            <p><i className="far fa-id-card" /> txid: {this.state.txid}</p>
+            <p><i className="fab fa-bitcoin" /> valueOut: {this.state.valueOut}</p>
           </div>
         </div>
         <div className="content-wrapper">

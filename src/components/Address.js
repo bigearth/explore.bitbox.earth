@@ -60,7 +60,7 @@ class Address extends Component {
     if(this.state.addrStr) {
       cashAddr = <p><i className="fas fa-qrcode" /> Cash: {this.props.bitbox.Address.toCashAddress(this.state.addrStr)}</p>;
       legacy = <p><i className="fas fa-qrcode" /> Legacy: {this.props.bitbox.Address.toLegacyAddress(this.state.addrStr)}</p>;
-      transactions = <p>transactions: {this.state.transactions.length}</p>;
+      transactions = <p><i className="fas fa-exchange-alt" /> Transactions: {this.state.transactions.length}</p>;
     }
 
     return (

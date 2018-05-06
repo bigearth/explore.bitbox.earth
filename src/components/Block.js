@@ -102,13 +102,13 @@ class Block extends Component {
       <div className='Block'>
         <h2><i className="fas fa-cube" /> Block {this.state.hash}</h2>
         <div className="pure-g">
-          <div className="pure-u-1-2">
+          <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="fas fa-cubes" /> Height: {this.state.height}</p>
             <p><i className="far fa-check-square" /> Confirmations: {this.state.confirmations}</p>
             <p><i className="fas fa-link" /> Difficulty: {this.state.difficulty}</p>
             <p><i className="fas fa-exchange-alt" /> Tx: {this.state.tx.length}</p>
           </div>
-          <div className="pure-u-1-2">
+          <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="fas fa-arrow-right" /> next:
               <Link
                 to={`/block/${this.state.nextblockhash}`}>

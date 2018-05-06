@@ -494,3 +494,13 @@ h2.l-box {
   margin: 0;
   padding-bottom: 0;
 }
+
+.Transaction ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.Transaction a, .Transaction a:visited, .Transaction a:hover, .Transaction a:active {
+  text-decoration: none;
+  color: $lightBlue;
+}

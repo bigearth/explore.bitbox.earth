@@ -453,6 +453,7 @@ a.pure-button-primary {
   border-radius: 20px;
   display: flex;
   flex-direction: row;
+  margin-top: 1em;
 }
 
 .input-icon {
@@ -482,5 +483,9 @@ a.pure-button-primary {
 
 .Block, .Address, .Transaction {
   color: $darkGrey;
-  padding-top: 200px;
+  padding-top: 150px;
+}
+
+.header .l-box {
+  padding: 0em;
 }

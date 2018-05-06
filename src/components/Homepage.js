@@ -13,7 +13,7 @@ let BITBOX = new BITBOXCli({
   port: "8332",
   username: "bitcoin",
   password: "xhFjluMJMyOXcYvF",
-  corsproxy: "local"
+  corsproxy: "remote"
 });
 
 import "../styles/homepage.scss";

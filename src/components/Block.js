@@ -14,7 +14,8 @@ class Block extends Component {
     super(props);
     this.state = {
       tx: [],
-      id: null
+      id: null,
+      poolInfo: {}
     };
   }
 
@@ -44,7 +45,6 @@ class Block extends Component {
       .then((result) => {
         this.props.bitbox.Block.details(result)
         .then((result) => {
-          // console.log(result)
           this.setState({
             bits: result.bits,
             chainwork: result.chainwork,
@@ -56,13 +56,14 @@ class Block extends Component {
             merkleroot: result.merkleroot,
             nextblockhash: result.nextblockhash,
             nonce: result.nonce,
-            // poolInfo: result.poolInfo,
+            poolInfo: result.poolInfo,
             previousblockhash: result.previousblockhash,
             reward: result.reward,
             size: result.size,
             time: result.time,
             length: result.length,
             version: result.version,
+            tx: result.tx
           });
         }, (err) => { console.log(err);
         });
@@ -82,13 +83,13 @@ class Block extends Component {
           merkleroot: result.merkleroot,
           nextblockhash: result.nextblockhash,
           nonce: result.nonce,
-          // poolInfo: result.poolInfo,
+          poolInfo: result.poolInfo,
           previousblockhash: result.previousblockhash,
           reward: result.reward,
           size: result.size,
           time: result.time,
-          length: result.length,
           version: result.version,
+          tx: result.tx
         });
       }, (err) => { console.log(err);
       });
@@ -99,31 +100,31 @@ class Block extends Component {
   render() {
     return (
       <div className='Block'>
+        <h2><i className="fas fa-cube" /> Block {this.state.hash}</h2>
         <div className="pure-g">
           <div className="pure-u-1-2">
-            <p>Confirmations: {this.state.confirmations}</p>
-            <p>Difficulty: {this.state.difficulty}</p>
-            <p>Hash: {this.state.hash}</p>
-            <p>Height: {this.state.height}</p>
+            <p><i className="fas fa-cubes" /> Height: {this.state.height}</p>
+            <p><i className="far fa-check-square" /> Confirmations: {this.state.confirmations}</p>
+            <p><i className="fas fa-link" /> Difficulty: {this.state.difficulty}</p>
+            <p><i className="fas fa-exchange-alt" /> Tx: {this.state.tx.length}</p>
           </div>
           <div className="pure-u-1-2">
-            <p>next:
+            <p><i className="fas fa-arrow-right" /> next:
               <Link
                 to={`/block/${this.state.nextblockhash}`}>
-                <i className="fa fa-code"></i> {this.state.nextblockhash}
+                {this.state.nextblockhash}
               </Link>
             </p>
-            <p>PoolInfo: {this.state.poolInfo}</p>
-            <p>previous:
+            <p><i className="fas fa-arrow-left" /> prev:
               <Link
                 to={`/block/${this.state.previousblockhash}`}>
-                <i className="fa fa-code"></i> {this.state.previousblockhash}
+                {this.state.previousblockhash}
               </Link>
             </p>
-            <p>Reward: {this.state.reward}</p>
-            <p>Size: {this.state.size}</p>
-            <p>Time: {this.state.time}</p>
-            <p>Tx: {this.state.tx.length}</p>
+            <p><i className="fas fa-wrench" /> Miner: <a href={this.state.poolInfo.url}>{this.state.poolInfo.poolName}</a></p>
+            <p><i className="fab fa-bitcoin" /> Reward: {this.state.reward}</p>
+            <p><i className="far fa-file" /> Size: {this.state.size}</p>
+            <p><i className="far fa-calendar-alt" /> Time: {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
           </div>
         </div>
         <div className="content-wrapper">

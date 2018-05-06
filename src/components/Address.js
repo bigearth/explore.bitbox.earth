@@ -32,7 +32,7 @@ class Address extends Component {
       id: id
     });
 
-    BITBOX.Address.details(BITBOX.Address.toLegacyAddress(id))
+    this.props.bitbox.Address.details(this.props.bitbox.Address.toLegacyAddress(id))
     .then((result) => {
       console.log(result);
       this.setState({
@@ -54,23 +54,30 @@ class Address extends Component {
   }
 
   render() {
+    let cashAddr;
+    let legacy;
+    let transactions;
+    if(this.state.addrStr) {
+      cashAddr = <p><i className="fas fa-qrcode" /> Cash: {this.props.bitbox.Address.toCashAddress(this.state.addrStr)}</p>;
+      legacy = <p><i className="fas fa-qrcode" /> Legacy: {this.props.bitbox.Address.toLegacyAddress(this.state.addrStr)}</p>;
+      transactions = <p>transactions: {this.state.transactions.length}</p>;
+    }
+
     return (
       <div className='Address'>
+        <h2><i className="fas fa-qrcode" /> Address {this.state.id}</h2>
         <div className="pure-g">
           <div className="pure-u-1-2">
-            <p>addrStr: {this.state.addrStr}</p>
+            {cashAddr}
+            {legacy}
             <p>balance: {this.state.balance}</p>
             <p>balanceSat: {this.state.balanceSat}</p>
             <p>totalReceived: {this.state.totalReceived}</p>
-            <p>totalReceivedSat: {this.state.totalReceivedSat}</p>
             <p>totalSent: {this.state.totalSent}</p>
-            <p>totalSentSat: {this.state.totalSentSat}</p>
           </div>
           <div className="pure-u-1-2">
-            <p>transactions: {this.state.transactions}</p>
-            <p>txApperances: {this.state.txApperances}</p>
+            {transactions}
             <p>unconfirmedBalance: {this.state.unconfirmedBalance}</p>
-            <p>unconfirmedBalanceSat: {this.state.unconfirmedBalanceSat}</p>
             <p>unconfirmedTxApperances: {this.state.unconfirmedTxApperances}</p>
           </div>
         </div>

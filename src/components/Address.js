@@ -34,9 +34,9 @@ class Address extends Component {
 
     this.props.bitbox.Address.details(this.props.bitbox.Address.toLegacyAddress(id))
     .then((result) => {
-      console.log(result);
       this.setState({
-        addrStr: result.addrStr,
+        legacyAddress: result.legacyAddress,
+        cashAddress: result.cashAddress,
         balance: result.balance,
         balanceSat: result.balanceSat,
         totalReceived: result.totalReceived,
@@ -58,8 +58,8 @@ class Address extends Component {
     let legacy;
     let transactions;
     if(this.state.addrStr) {
-      cashAddr = <p><i className="fas fa-qrcode" /> Cash: {this.props.bitbox.Address.toCashAddress(this.state.addrStr)}</p>;
-      legacy = <p><i className="fas fa-qrcode" /> Legacy: {this.props.bitbox.Address.toLegacyAddress(this.state.addrStr)}</p>;
+      cashAddr = <p><i className="fas fa-qrcode" /> Cash: {this.state.cashAddress}</p>;
+      legacy = <p><i className="fas fa-qrcode" /> Legacy: {this.state.legacyAddress}</p>;
       transactions = <p><i className="fas fa-exchange-alt" /> Transactions: {this.state.transactions.length}</p>;
     }
 

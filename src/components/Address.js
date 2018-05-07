@@ -30,11 +30,11 @@ class Address extends Component {
     .then((result) => {
       console.log(result)
 
-      // let transactions = result.tx;
-      // let txs = [];
-      // for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
-      //   txs.push(result.tx[i]);
-      // }
+      let transactions = result.transactions;
+      let txs = [];
+      for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
+        txs.push(result.transactions[i]);
+      }
       this.setState({
         legacyAddress: result.legacyAddress,
         cashAddress: result.cashAddress,
@@ -46,6 +46,7 @@ class Address extends Component {
         totalSentSat: result.totalSentSat,
         transactions: result.transactions,
         txApperances: result.txApperances,
+        txs: txs,
         unconfirmedBalance: result.unconfirmedBalance,
         unconfirmedBalanceSat: result.unconfirmedBalanceSat,
         unconfirmedTxApperances: result.unconfirmedTxApperances,
@@ -81,7 +82,7 @@ class Address extends Component {
       legacy = <p>Legacy: {this.state.legacyAddress}</p>;
       transactionCount = this.state.transactions.length;
 
-      this.state.transactions.forEach((tx, ind) => {
+      this.state.txs.forEach((tx, ind) => {
         transactions.push(
           <tr key={ind} className="pure-table-odd">
             <td>

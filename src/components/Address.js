@@ -29,12 +29,12 @@ class Address extends Component {
     this.props.bitbox.Address.details(this.props.bitbox.Address.toLegacyAddress(id))
     .then((result) => {
       console.log(result)
-      
-      let transactions = result.tx;
-      let txs = [];
-      for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
-        txs.push(result.tx[i]);
-      }
+
+      // let transactions = result.tx;
+      // let txs = [];
+      // for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
+      //   txs.push(result.tx[i]);
+      // }
       this.setState({
         legacyAddress: result.legacyAddress,
         cashAddress: result.cashAddress,
@@ -49,6 +49,7 @@ class Address extends Component {
         unconfirmedBalance: result.unconfirmedBalance,
         unconfirmedBalanceSat: result.unconfirmedBalanceSat,
         unconfirmedTxApperances: result.unconfirmedTxApperances,
+        pageCount: Math.floor(result.transactions.length / this.state.perPage)
       });
     }, (err) => { console.log(err);
     });

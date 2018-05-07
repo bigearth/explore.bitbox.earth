@@ -4,6 +4,7 @@ import {
   Link,
   withRouter
 } from 'react-router-dom';
+import QRCode from 'qrcode.react';
 
 import "../styles/homepage.scss";
 
@@ -44,22 +45,31 @@ class Address extends Component {
   }
 
   render() {
+    let qr;
     let cashAddr;
     let legacy;
     let transactions;
-    if(this.state.addrStr) {
-      cashAddr = <p><i className="fas fa-qrcode" /> Cash: {this.state.cashAddress}</p>;
-      legacy = <p><i className="fas fa-qrcode" /> Legacy: {this.state.legacyAddress}</p>;
+    if(this.state.cashAddress) {
+      qr = <QRCode value={this.state.id} />;
+      cashAddr = <p>Cash: {this.state.cashAddress}</p>;
+      legacy = <p>Legacy: {this.state.legacyAddress}</p>;
       transactions = <p><i className="fas fa-exchange-alt" /> Transactions: {this.state.transactions.length}</p>;
     }
 
     return (
       <div className='Address'>
-        <h2 className='l-box'><i className="fas fa-qrcode" /> Address {this.state.id}</h2>
         <div className="pure-g">
-          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
+          <div className="l-box pure-u-1 pure-u-md-1-12 pure-u-lg-1-12">
+            {qr}
+          </div>
+          <div className="l-box pure-u-1 pure-u-md-11-12 pure-u-lg-11-12">
+            <h2 className=''> Address</h2>
             {cashAddr}
             {legacy}
+          </div>
+        </div>
+        <div className="pure-g">
+          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="fab fa-bitcoin" /> Balance: {this.state.balance}</p>
             <p><i className="fas fa-arrow-up" /> Total Received: {this.state.totalReceived}</p>
             <p><i className="fas fa-arrow-down" /> Total Sent: {this.state.totalSent}</p>

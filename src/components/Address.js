@@ -53,7 +53,6 @@ class Address extends Component {
       qr = <QRCode value={this.state.id} />;
       cashAddr = <p>Cash: {this.state.cashAddress}</p>;
       legacy = <p>Legacy: {this.state.legacyAddress}</p>;
-      transactions = <p><i className="fas fa-exchange-alt" /> Transactions: {this.state.transactions.length}</p>;
     }
 
     return (
@@ -62,22 +61,14 @@ class Address extends Component {
           <div className="l-box pure-u-1 pure-u-md-1-12 pure-u-lg-1-12">
             {qr}
           </div>
-          <div className="l-box pure-u-1 pure-u-md-11-12 pure-u-lg-11-12">
+          <div className="l-box pure-u-1 pure-u-md-1-3 pure-u-lg-1-3">
             <h2 className=''> Address</h2>
             {cashAddr}
             {legacy}
           </div>
-        </div>
-        <div className="pure-g">
-          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
+          <div className="l-box pure-u-1 pure-u-md-7-12 pure-u-lg-7-12">
             <p><i className="fab fa-bitcoin" /> Balance: {this.state.balance}</p>
             <p><i className="fas fa-arrow-up" /> Total Received: {this.state.totalReceived}</p>
-            <p><i className="fas fa-arrow-down" /> Total Sent: {this.state.totalSent}</p>
-          </div>
-          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
-            {transactions}
-            <p><i className="fas fa-arrow-down" /> Unconfirmed Balance: {this.state.unconfirmedBalance}</p>
-            <p><i className="fas fa-arrow-down" /> UnconfirmedTxApperances: {this.state.unconfirmedTxApperances}</p>
           </div>
         </div>
       </div>

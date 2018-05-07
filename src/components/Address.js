@@ -25,6 +25,7 @@ class Address extends Component {
 
     this.props.bitbox.Address.details(this.props.bitbox.Address.toLegacyAddress(id))
     .then((result) => {
+      console.log(result)
       this.setState({
         legacyAddress: result.legacyAddress,
         cashAddress: result.cashAddress,
@@ -48,11 +49,24 @@ class Address extends Component {
     let qr;
     let cashAddr;
     let legacy;
-    let transactions;
+    let transactions = [];
+    let transactionCount;
     if(this.state.cashAddress) {
       qr = <QRCode value={this.state.id} />;
       cashAddr = <p>Cash: {this.state.cashAddress}</p>;
       legacy = <p>Legacy: {this.state.legacyAddress}</p>;
+      transactionCount = this.state.transactions.length;
+
+      this.state.transactions.forEach((tx, ind) => {
+        transactions.push(
+          <tr key={ind} className="pure-table-odd">
+            <td>{tx}</td>
+            <td>Honda</td>
+            <td>Accord</td>
+            <td>2009</td>
+          </tr>
+        )
+      })
     }
 
     return (
@@ -71,6 +85,21 @@ class Address extends Component {
             <p><i className="fas fa-arrow-up" /> Total Received: {this.state.totalReceived}</p>
           </div>
         </div>
+        <h2 className='l-box'><i className="fas fa-exchange-alt" />  Transactions {transactionCount}</h2>
+        <table className="pure-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Make</th>
+              <th>Model</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {transactions}
+          </tbody>
+        </table>
       </div>
     );
   }

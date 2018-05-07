@@ -15,7 +15,8 @@ class Block extends Component {
     this.state = {
       tx: [],
       id: null,
-      poolInfo: {}
+      poolInfo: {},
+      perPage: 3
     };
   }
 
@@ -23,7 +24,8 @@ class Block extends Component {
     let id = this.props.match.params.id;
     document.title = `Block ${id} - Explore by this.props.bitbox`;
     this.setState({
-      id: id
+      id: id,
+      offset: 0
     });
 
     this.determineEndpoint(id);
@@ -33,7 +35,8 @@ class Block extends Component {
     let id = props.match.params.id;
     document.title = `Block ${id} - Explore by this.props.bitbox`;
     this.setState({
-      id: id
+      id: id,
+      offset: 0
     });
 
     this.determineEndpoint(id);
@@ -54,6 +57,13 @@ class Block extends Component {
   fetchData(id) {
     this.props.bitbox.Block.details(id)
     .then((result) => {
+      console.log(result)
+      let transactions = result.tx;
+      let txs = [];
+      for(let i = this.state.offset; i <= this.state.offset + this.state.perPage; i++) {
+        txs.push(result.tx[i]);
+      }
+
       this.setState({
         bits: result.bits,
         chainwork: result.chainwork,
@@ -71,19 +81,23 @@ class Block extends Component {
         size: result.size,
         time: result.time,
         version: result.version,
-        tx: result.tx
+        txs: txs,
+        transactions: result.tx
       });
     }, (err) => { console.log(err);
     });
   }
 
   handlePageClick(data) {
-    console.log(data)
-    // let selected = data.selected;
-    // let offset = Math.ceil(selected * this.props.perPage);
+    let selected = data.selected;
+    let transactions = this.state.transactions;
+    let txs = [];
+    for(let i = selected; i <= selected + this.state.perPage; i++) {
+      txs.push(this.state.transactions[i]);
+    }
     //
-    this.setState({tx: offset}, () => {
-      this.loadCommentsFromServer();
+    this.setState({
+      txs: txs
     });
   };
 
@@ -91,9 +105,9 @@ class Block extends Component {
     let transactions = [];
     let transactionCount;
     if(this.state.hash) {
-      transactionCount = this.state.tx.length;
+      transactionCount = this.state.transactions.length;
 
-      this.state.tx.forEach((tx, ind) => {
+      this.state.txs.forEach((tx, ind) => {
         transactions.push(
           <tr key={ind} className="pure-table-odd">
             <td>
@@ -150,17 +164,19 @@ class Block extends Component {
           </tbody>
         </table>
 
-        <ReactPaginate previousLabel={"previous"}
-           nextLabel={"next"}
-           breakLabel={<a href="">...</a>}
-           breakClassName={"break-me"}
-           pageCount={this.state.pageCount}
-           marginPagesDisplayed={2}
-           pageRangeDisplayed={5}
-           onPageChange={this.handlePageClick}
-           containerClassName={"pagination"}
-           subContainerClassName={"pages pagination"}
-           activeClassName={"active"} />
+        <ReactPaginate
+          previousLabel={"previous"}
+          nextLabel={"next"}
+          breakLabel={<a href="">...</a>}
+          breakClassName={"break-me"}
+          pageCount={this.state.pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={this.handlePageClick.bind(this)}
+          containerClassName={"pagination"}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
+        />
       </div>
     );
   }

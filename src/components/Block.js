@@ -83,7 +83,7 @@ class Block extends Component {
         version: result.version,
         txs: txs,
         transactions: result.tx,
-        pageCount: 10
+        pageCount: Math.floor(result.tx.length / this.state.perPage)
       });
     }, (err) => { console.log(err);
     });

@@ -4,16 +4,6 @@ import {
   Link,
   withRouter
 } from 'react-router-dom';
-import Slider from 'react-slick';
-let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
-let BITBOX = new BITBOXCli({
-  protocol: 'https',
-  host: '127.0.0.1',
-  port: 8332,
-  username: '',
-  password: '',
-  corsproxy: 'remote'
-});
 
 import "../styles/homepage.scss";
 

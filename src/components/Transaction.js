@@ -18,7 +18,7 @@ class Transaction extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    document.title = `Explore by BITBOX - Transaction ${id}`;
+    document.title = `Transaction ${id} - Explore by BITBOX`;
     this.setState({
       id: id
     });

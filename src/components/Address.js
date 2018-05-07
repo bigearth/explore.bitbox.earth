@@ -70,15 +70,14 @@ class Address extends Component {
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             {cashAddr}
             {legacy}
-            <p>balance: {this.state.balance}</p>
-            <p>balanceSat: {this.state.balanceSat}</p>
-            <p>totalReceived: {this.state.totalReceived}</p>
-            <p>totalSent: {this.state.totalSent}</p>
+            <p><i className="fab fa-bitcoin" /> Balance: {this.state.balance}</p>
+            <p><i className="fas fa-arrow-up" /> Total Received: {this.state.totalReceived}</p>
+            <p><i className="fas fa-arrow-down" /> Total Sent: {this.state.totalSent}</p>
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             {transactions}
-            <p>unconfirmedBalance: {this.state.unconfirmedBalance}</p>
-            <p>unconfirmedTxApperances: {this.state.unconfirmedTxApperances}</p>
+            <p><i className="fas fa-arrow-down" /> Unconfirmed Balance: {this.state.unconfirmedBalance}</p>
+            <p><i className="fas fa-arrow-down" /> UnconfirmedTxApperances: {this.state.unconfirmedTxApperances}</p>
           </div>
         </div>
       </div>

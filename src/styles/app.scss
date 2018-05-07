@@ -500,7 +500,7 @@ h2.l-box {
   padding-left: 0;
 }
 
-.Transaction a, .Transaction a:visited, .Transaction a:hover, .Transaction a:active, .Address a, .Address a:visited, .Address a:hover, .Address a:active  {
+a, a:visited, a:hover, a:active {
   text-decoration: none;
   color: $lightBlue;
 }

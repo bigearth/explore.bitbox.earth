@@ -60,7 +60,7 @@ class Block extends Component {
       console.log(result)
       let transactions = result.tx;
       let txs = [];
-      for(let i = this.state.offset; i <= this.state.offset + this.state.perPage; i++) {
+      for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
         txs.push(result.tx[i]);
       }
 
@@ -92,7 +92,7 @@ class Block extends Component {
     let selected = data.selected;
     let transactions = this.state.transactions;
     let txs = [];
-    for(let i = selected; i <= selected + this.state.perPage; i++) {
+    for(let i = selected; i < selected + this.state.perPage; i++) {
       txs.push(this.state.transactions[i]);
     }
     //

@@ -16,7 +16,7 @@ class Block extends Component {
       tx: [],
       id: null,
       poolInfo: {},
-      perPage: 10
+      perPage: 5
     };
   }
 
@@ -46,23 +46,18 @@ class Block extends Component {
     if(id.length !== 64) {
       this.props.bitbox.Blockchain.getBlockHash(id)
       .then((result) => {
-        this.fetchData(result);
+        this.fetchBlockData(result);
       }, (err) => { console.log(err);
       });
     } else {
-      this.fetchData(id);
+      this.fetchBlockData(id);
     }
   }
 
-  fetchData(id) {
+  fetchBlockData(id) {
     this.props.bitbox.Block.details(id)
     .then((result) => {
-      console.log(result)
-      let transactions = result.tx;
-      let txs = [];
-      for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
-        txs.push(result.tx[i]);
-      }
+      this.fetchTransactionData(result.tx);
 
       this.setState({
         bits: result.bits,
@@ -81,9 +76,51 @@ class Block extends Component {
         size: result.size,
         time: result.time,
         version: result.version,
-        txs: txs,
         transactions: result.tx,
         pageCount: Math.floor(result.tx.length / this.state.perPage)
+      });
+    }, (err) => { console.log(err);
+    });
+  }
+
+  fetchTransactionData(transactions) {
+    let txs = [];
+    for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
+      txs.push(transactions[i]);
+    }
+    console.log(txs)
+
+    // axios.all(txs)
+    // .then(axios.spread(function (...spread) {
+    //   result.push(...spread);
+    //   res.json(result);
+    // }));
+    //
+    this.props.bitbox.Transaction.details(JSON.stringify(txs))
+    .then((result) => {
+      console.log(result)
+      // let transactions = result.tx;
+      //
+      this.setState({
+      //   bits: result.bits,
+      //   chainwork: result.chainwork,
+      //   confirmations: result.confirmations,
+      //   difficulty: result.difficulty,
+      //   hash: result.hash,
+      //   height: result.height,
+      //   isMainChain: result.isMainChain,
+      //   merkleroot: result.merkleroot,
+      //   nextblockhash: result.nextblockhash,
+      //   nonce: result.nonce,
+      //   poolInfo: result.poolInfo,
+      //   previousblockhash: result.previousblockhash,
+      //   reward: result.reward,
+      //   size: result.size,
+      //   time: result.time,
+      //   version: result.version,
+        txs: txs
+      //   transactions: result.tx,
+      //   pageCount: Math.floor(result.tx.length / this.state.perPage)
       });
     }, (err) => { console.log(err);
     });
@@ -105,7 +142,7 @@ class Block extends Component {
   render() {
     let transactions = [];
     let transactionCount;
-    if(this.state.hash) {
+    if(this.state.txs) {
       transactionCount = this.state.transactions.length;
 
       this.state.txs.forEach((tx, ind) => {

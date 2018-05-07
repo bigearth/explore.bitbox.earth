@@ -5,6 +5,7 @@ import {
   withRouter
 } from 'react-router-dom';
 import QRCode from 'qrcode.react';
+import ReactPaginate from 'react-paginate';
 
 import "../styles/homepage.scss";
 
@@ -12,7 +13,8 @@ class Address extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tx: []
+      tx: [],
+      perPage: 10
     };
   }
 
@@ -20,12 +22,19 @@ class Address extends Component {
     let id = this.props.match.params.id;
     document.title = `Address ${id} - Explore by BITBOX`;
     this.setState({
-      id: id
+      id: id,
+      offset: 0
     });
 
     this.props.bitbox.Address.details(this.props.bitbox.Address.toLegacyAddress(id))
     .then((result) => {
       console.log(result)
+      
+      let transactions = result.tx;
+      let txs = [];
+      for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
+        txs.push(result.tx[i]);
+      }
       this.setState({
         legacyAddress: result.legacyAddress,
         cashAddress: result.cashAddress,
@@ -44,6 +53,20 @@ class Address extends Component {
     }, (err) => { console.log(err);
     });
   }
+
+
+  handlePageClick(data) {
+    let selected = data.selected;
+    let transactions = this.state.transactions;
+    let txs = [];
+    for(let i = selected; i < selected + this.state.perPage; i++) {
+      txs.push(this.state.transactions[i]);
+    }
+    //
+    this.setState({
+      txs: txs
+    });
+  };
 
   render() {
     let qr;
@@ -99,6 +122,20 @@ class Address extends Component {
             {transactions}
           </tbody>
         </table>
+
+        <ReactPaginate
+          previousLabel={"previous"}
+          nextLabel={"next"}
+          breakLabel={<a href="">...</a>}
+          breakClassName={"break-me"}
+          pageCount={this.state.pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={this.handlePageClick.bind(this)}
+          containerClassName={"pagination"}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
+        />
       </div>
     );
   }

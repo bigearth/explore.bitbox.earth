@@ -16,7 +16,7 @@ class Block extends Component {
       tx: [],
       id: null,
       poolInfo: {},
-      perPage: 3
+      perPage: 10
     };
   }
 
@@ -82,7 +82,8 @@ class Block extends Component {
         time: result.time,
         version: result.version,
         txs: txs,
-        transactions: result.tx
+        transactions: result.tx,
+        pageCount: 10
       });
     }, (err) => { console.log(err);
     });

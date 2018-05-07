@@ -26,7 +26,7 @@ class Block extends Component {
       id: id
     });
 
-    this.fetchData(id);
+    this.determineEndpoint(id);
   }
 
   componentWillReceiveProps(props) {
@@ -36,66 +36,56 @@ class Block extends Component {
       id: id
     });
 
-    this.fetchData(id);
+    this.determineEndpoint(id);
   }
 
-  fetchData(id) {
+  determineEndpoint(id) {
     if(id.length !== 64) {
       this.props.bitbox.Blockchain.getBlockHash(id)
       .then((result) => {
-        this.props.bitbox.Block.details(result)
-        .then((result) => {
-          this.setState({
-            bits: result.bits,
-            chainwork: result.chainwork,
-            confirmations: result.confirmations,
-            difficulty: result.difficulty,
-            hash: result.hash,
-            height: result.height,
-            isMainChain: result.isMainChain,
-            merkleroot: result.merkleroot,
-            nextblockhash: result.nextblockhash,
-            nonce: result.nonce,
-            poolInfo: result.poolInfo,
-            previousblockhash: result.previousblockhash,
-            reward: result.reward,
-            size: result.size,
-            time: result.time,
-            length: result.length,
-            version: result.version,
-            tx: result.tx
-          });
-        }, (err) => { console.log(err);
-        });
+        this.fetchData(result);
       }, (err) => { console.log(err);
       });
     } else {
-      this.props.bitbox.Block.details(id)
-      .then((result) => {
-        this.setState({
-          bits: result.bits,
-          chainwork: result.chainwork,
-          confirmations: result.confirmations,
-          difficulty: result.difficulty,
-          hash: result.hash,
-          height: result.height,
-          isMainChain: result.isMainChain,
-          merkleroot: result.merkleroot,
-          nextblockhash: result.nextblockhash,
-          nonce: result.nonce,
-          poolInfo: result.poolInfo,
-          previousblockhash: result.previousblockhash,
-          reward: result.reward,
-          size: result.size,
-          time: result.time,
-          version: result.version,
-          tx: result.tx
-        });
-      }, (err) => { console.log(err);
-      });
+      this.fetchData(id);
     }
-
   }
+
+  fetchData(id) {
+    this.props.bitbox.Block.details(id)
+    .then((result) => {
+      this.setState({
+        bits: result.bits,
+        chainwork: result.chainwork,
+        confirmations: result.confirmations,
+        difficulty: result.difficulty,
+        hash: result.hash,
+        height: result.height,
+        isMainChain: result.isMainChain,
+        merkleroot: result.merkleroot,
+        nextblockhash: result.nextblockhash,
+        nonce: result.nonce,
+        poolInfo: result.poolInfo,
+        previousblockhash: result.previousblockhash,
+        reward: result.reward,
+        size: result.size,
+        time: result.time,
+        version: result.version,
+        tx: result.tx
+      });
+    }, (err) => { console.log(err);
+    });
+  }
+
+  handlePageClick(data) {
+    console.log(data)
+    // let selected = data.selected;
+    // let offset = Math.ceil(selected * this.props.perPage);
+    //
+    this.setState({tx: offset}, () => {
+      this.loadCommentsFromServer();
+    });
+  };
 
   render() {
     let transactions = [];
@@ -161,16 +151,16 @@ class Block extends Component {
         </table>
 
         <ReactPaginate previousLabel={"previous"}
-                       nextLabel={"next"}
-                       breakLabel={<a href="">...</a>}
-                       breakClassName={"break-me"}
-                       pageCount={this.state.pageCount}
-                       marginPagesDisplayed={2}
-                       pageRangeDisplayed={5}
-                       onPageChange={this.handlePageClick}
-                       containerClassName={"pagination"}
-                       subContainerClassName={"pages pagination"}
-                       activeClassName={"active"} />
+           nextLabel={"next"}
+           breakLabel={<a href="">...</a>}
+           breakClassName={"break-me"}
+           pageCount={this.state.pageCount}
+           marginPagesDisplayed={2}
+           pageRangeDisplayed={5}
+           onPageChange={this.handlePageClick}
+           containerClassName={"pagination"}
+           subContainerClassName={"pages pagination"}
+           activeClassName={"active"} />
       </div>
     );
   }

@@ -60,10 +60,12 @@ class Address extends Component {
       this.state.transactions.forEach((tx, ind) => {
         transactions.push(
           <tr key={ind} className="pure-table-odd">
-            <td>{tx}</td>
-            <td>Honda</td>
-            <td>Accord</td>
-            <td>2009</td>
+            <td>
+              <Link
+                to={`/transaction/${tx}`}>
+                {tx}
+              </Link>
+            </td>
           </tr>
         )
       })
@@ -89,10 +91,7 @@ class Address extends Component {
         <table className="pure-table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Make</th>
-              <th>Model</th>
-              <th>Year</th>
+              <th>txid</th>
             </tr>
           </thead>
 

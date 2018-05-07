@@ -97,6 +97,24 @@ class Block extends Component {
   }
 
   render() {
+    let transactions = [];
+    let transactionCount;
+    if(this.state.hash) {
+      transactionCount = this.state.tx.length;
+
+      this.state.tx.forEach((tx, ind) => {
+        transactions.push(
+          <tr key={ind} className="pure-table-odd">
+            <td>
+              <Link
+                to={`/transaction/${tx}`}>
+                {tx}
+              </Link>
+            </td>
+          </tr>
+        )
+      })
+    }
     return (
       <div className='Block'>
         <h2 className='l-box'><i className="fas fa-cube" /> Block {this.state.height}</h2>
@@ -126,6 +144,18 @@ class Block extends Component {
             <p><i className="fas fa-wrench" /> Miner: <a href={this.state.poolInfo.url}>{this.state.poolInfo.poolName}</a></p>
           </div>
         </div>
+        <h2 className='l-box'><i className="fas fa-exchange-alt" />  Transactions {transactionCount}</h2>
+        <table className="pure-table">
+          <thead>
+            <tr>
+              <th>txid</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {transactions}
+          </tbody>
+        </table>
       </div>
     );
   }

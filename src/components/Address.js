@@ -65,7 +65,6 @@ class Address extends Component {
                 to={`/transaction/${tx}`}>
                 {tx}
               </Link>
-
             </td>
           </tr>
         )

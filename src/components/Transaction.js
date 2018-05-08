@@ -30,8 +30,7 @@ class Transaction extends Component {
         blockhash: result.blockhash,
         blockheight: result.blockheight,
         confirmations: result.confirmations,
-        isCoinBase: result.isCoinBase,
-        size: result.size,
+        size: result.size / 1000,
         time: result.time,
         txid: result.txid,
         valueOut: result.valueOut,
@@ -61,7 +60,7 @@ class Transaction extends Component {
 
     let formattedSize;
     if(this.state.size) {
-      formattedSize = <FormattedNumber value={this.state.valueOut}/>;
+      formattedSize = this.state.size;
     }
 
     let vin = [];
@@ -116,14 +115,16 @@ class Transaction extends Component {
         <h2 className='l-box'><i className="fas fa-exchange-alt" /> Transaction {this.state.id}</h2>
         <div className="pure-g">
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
-            <p><i className="fas fa-cube" /> blockhash: {this.state.blockhash}</p>
-            <p><i className="fas fa-cubes" /> blockheight: {formattedBlockHeight}</p>
+            <p><i className="fas fa-cube" /> Included in block <Link
+                to={`/block/${this.state.blockhash}`}>
+                {formattedBlockHeight}
+              </Link>
+            </p>
             <p><i className="far fa-check-square" /> confirmations: {formattedConfirmations}</p>
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
-            <p><i className="far fa-file" /> Size: {formattedSize} bytes</p>
-            <p><i className="far fa-calendar-alt" /> Time: {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
-            <p><i className="far fa-id-card" /> txid: {this.state.txid}</p>
+            <p><i className="far fa-file" /> Size: {formattedSize} kb</p>
+            <p><i className="far fa-calendar-alt" /> {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
           </div>
         </div>
         <div className="pure-g">

@@ -191,7 +191,7 @@
   border: none;
 }
 
-.footer a {
+.footer a, .footer a:visited, .footer a:hover, .footer a:active, {
   text-decoration: none;
   color: #ffffff;
 }
@@ -219,7 +219,7 @@
  */
 body {
     line-height: 1.7em;
-    color: white;
+    color: $lightGrey;
     font-size: 13px;
 }
 
@@ -341,7 +341,7 @@ a.pure-button-primary {
     width: 100%;
     min-height: 12%;
     z-index: 2;
-    background: white;
+    background: $lightBlue;
 
 }
 

@@ -97,7 +97,12 @@ class Block extends Component {
 
   fetchTransactionData(transactions) {
     let txs = [];
-    for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
+    let upperBound = this.state.perPage;
+    if(transactions.length < upperBound) {
+      upperBound = transactions.length;
+    }
+
+    for(let i = this.state.offset; i < this.state.offset + upperBound; i++) {
       txs.push(transactions[i]);
     }
 

@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import {
   Link,
+  Redirect,
   withRouter
 } from 'react-router-dom';
 import QRCode from 'qrcode.react';
 import ReactPaginate from 'react-paginate';
+import {FormattedNumber} from 'react-intl';
 
 import "../styles/homepage.scss";
 
@@ -16,7 +18,9 @@ class Address extends Component {
       tx: [],
       perPage: 10,
       offset: 0,
-      transactions: []
+      transactions: [],
+      redirect: false,
+      txid: null
     };
   }
 
@@ -29,19 +33,7 @@ class Address extends Component {
 
     this.props.bitbox.Address.details(id)
     .then((result) => {
-
-      let transactions = result.transactions;
-      let txs = [];
-      let upperBound = this.state.perPage;
-      if(result.transactions.length < upperBound) {
-        upperBound = result.transactions.length;
-      }
-
-      if(result.transactions.length > 0) {
-        for(let i = this.state.offset; i < this.state.offset + upperBound; i++) {
-          txs.push(result.transactions[i]);
-        }
-      }
+      this.fetchTransactionData(result.transactions);
 
       this.setState({
         legacyAddress: result.legacyAddress,
@@ -54,8 +46,8 @@ class Address extends Component {
         totalSentSat: result.totalSentSat,
         transactions: result.transactions,
         txApperances: result.txApperances,
-        txs: txs,
         unconfirmedBalance: result.unconfirmedBalance,
+        txs: [],
         unconfirmedBalanceSat: result.unconfirmedBalanceSat,
         unconfirmedTxApperances: result.unconfirmedTxApperances,
         pageCount: Math.floor(result.transactions.length / this.state.perPage)
@@ -64,8 +56,41 @@ class Address extends Component {
     });
   }
 
+  handleRedirect(txid) {
+    this.setState({
+      redirect: true,
+      txid: txid
+    })
+  }
+
+  fetchTransactionData(transactions) {
+
+    let txs = [];
+    let upperBound = this.state.perPage;
+    if(transactions.length < upperBound) {
+      upperBound = transactions.length;
+    }
+
+    if(transactions.length > 0) {
+      for(let i = this.state.offset; i < this.state.offset + upperBound; i++) {
+        txs.push(transactions[i]);
+      }
+    }
+
+    this.props.bitbox.Transaction.details(JSON.stringify(txs))
+    .then((result) => {
+      console.log(result)
+      this.setState({
+        txs: result
+      });
+    }, (err) => { console.log(err);
+    });
+  }
 
   handlePageClick(data) {
+    this.setState({
+      txs: []
+    });
     let selected = data.selected;
     let transactions = this.state.transactions;
     let txs = [];
@@ -74,13 +99,23 @@ class Address extends Component {
         txs.push(this.state.transactions[i]);
       }
     }
-
-    this.setState({
-      txs: txs
+    this.props.bitbox.Transaction.details(JSON.stringify(txs))
+    .then((result) => {
+      this.setState({
+        txs: result
+      });
+    }, (err) => { console.log(err);
     });
+
   };
 
   render() {
+    if(this.state.redirect) {
+      return (<Redirect to={{
+        pathname: `/transaction/${this.state.txid}`
+      }} />)
+    }
+
     let qr;
     let cashAddr;
     let legacy;
@@ -94,13 +129,11 @@ class Address extends Component {
 
       this.state.txs.forEach((tx, ind) => {
         transactions.push(
-          <tr key={ind} className="pure-table-odd">
-            <td>
-              <Link
-                to={`/transaction/${tx}`}>
-                {tx}
-              </Link>
-            </td>
+          <tr key={ind} className="" onClick={this.handleRedirect.bind(this, tx.txid)}>
+            <td>{tx.txid}</td>
+            <td><FormattedNumber value={tx.vin.length}/></td>
+            <td><FormattedNumber value={tx.vout.length}/></td>
+            <td><FormattedNumber value={tx.valueOut}/></td>
           </tr>
         )
       })
@@ -111,11 +144,14 @@ class Address extends Component {
       table = <table className="pure-table">
         <thead>
           <tr>
-            <th>txid</th>
+            <th>TXID</th>
+            <th># vin</th>
+            <th># vout</th>
+            <th>value</th>
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className='navTable'>
           {transactions}
         </tbody>
       </table>;

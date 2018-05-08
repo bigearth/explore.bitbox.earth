@@ -148,7 +148,6 @@ class Block extends Component {
             <p><i className="far fa-calendar-alt" /> Time: {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
             <p><i className="far fa-check-square" /> Confirmations: {this.state.confirmations}</p>
             <p><i className="fas fa-link" /> Difficulty: {this.state.difficulty}</p>
-            <p><i className="fas fa-exchange-alt" /> Tx: {this.state.txs.length}</p>
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="far fa-file" /> Size: {this.state.size}</p>

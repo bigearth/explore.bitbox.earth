@@ -158,17 +158,17 @@ class Address extends Component {
     }
 
     return (
-      <div className='Address'>
+      <div className='Address container'>
         <div className="pure-g">
-          <div className="l-box pure-u-1 pure-u-md-1-12 pure-u-lg-1-12">
+          <div className="l-box pure-u-1 pure-u-md-1-6 pure-u-lg-1-6">
             {qr}
           </div>
-          <div className="l-box pure-u-1 pure-u-md-1-3 pure-u-lg-1-3">
+          <div className="l-box pure-u-1 pure-u-md-7-12 pure-u-lg-7-12">
             <h2 className=''> Address</h2>
             {cashAddr}
             {legacy}
           </div>
-          <div className="l-box pure-u-1 pure-u-md-7-12 pure-u-lg-7-12">
+          <div className="l-box pure-u-1 pure-u-md-1-4 pure-u-lg-1-4">
             <p><i className="fab fa-bitcoin" /> Balance: {this.state.balance}</p>
             <p><i className="fas fa-arrow-up" /> Total Received: {this.state.totalReceived}</p>
           </div>

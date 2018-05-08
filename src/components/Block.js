@@ -173,7 +173,7 @@ class Block extends Component {
       formattedDifficulty = <FormattedNumber value={this.state.difficulty}/>;
     }
     return (
-      <div className='Block'>
+      <div className='Block container'>
         <h2 className='l-box'><i className="fas fa-cube" /> Block {formattedBlockHeight}</h2>
         <div className="pure-g">
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">

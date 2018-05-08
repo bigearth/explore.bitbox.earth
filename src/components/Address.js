@@ -14,7 +14,9 @@ class Address extends Component {
     super(props);
     this.state = {
       tx: [],
-      perPage: 10
+      perPage: 10,
+      offset: 0,
+      transactions: []
     };
   }
 
@@ -22,19 +24,25 @@ class Address extends Component {
     let id = this.props.match.params.id;
     document.title = `Address ${id} - Explore by BITBOX`;
     this.setState({
-      id: id,
-      offset: 0
+      id: id
     });
 
-    this.props.bitbox.Address.details(this.props.bitbox.Address.toLegacyAddress(id))
+    this.props.bitbox.Address.details(id)
     .then((result) => {
-      console.log(result)
 
       let transactions = result.transactions;
       let txs = [];
-      for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
-        txs.push(result.transactions[i]);
+      let upperBound = this.state.perPage;
+      if(result.transactions.length < upperBound) {
+        upperBound = result.transactions.length;
       }
+
+      if(result.transactions.length > 0) {
+        for(let i = this.state.offset; i < this.state.offset + upperBound; i++) {
+          txs.push(result.transactions[i]);
+        }
+      }
+
       this.setState({
         legacyAddress: result.legacyAddress,
         cashAddress: result.cashAddress,
@@ -61,10 +69,12 @@ class Address extends Component {
     let selected = data.selected;
     let transactions = this.state.transactions;
     let txs = [];
-    for(let i = selected; i < selected + this.state.perPage; i++) {
-      txs.push(this.state.transactions[i]);
+    if(this.state.transactions.length > 0) {
+      for(let i = selected; i < selected + this.state.perPage; i++) {
+        txs.push(this.state.transactions[i]);
+      }
     }
-    //
+
     this.setState({
       txs: txs
     });
@@ -96,6 +106,21 @@ class Address extends Component {
       })
     }
 
+    let table;
+    if(this.state.transactions.length > 0) {
+      table = <table className="pure-table">
+        <thead>
+          <tr>
+            <th>txid</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {transactions}
+        </tbody>
+      </table>;
+    }
+
     return (
       <div className='Address'>
         <div className="pure-g">
@@ -113,17 +138,7 @@ class Address extends Component {
           </div>
         </div>
         <h2 className='l-box'><i className="fas fa-exchange-alt" />  Transactions {transactionCount}</h2>
-        <table className="pure-table">
-          <thead>
-            <tr>
-              <th>txid</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {transactions}
-          </tbody>
-        </table>
+        {table}
 
         <ReactPaginate
           previousLabel={"previous"}

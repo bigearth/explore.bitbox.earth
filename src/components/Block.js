@@ -88,17 +88,9 @@ class Block extends Component {
     for(let i = this.state.offset; i < this.state.offset + this.state.perPage; i++) {
       txs.push(transactions[i]);
     }
-    console.log(txs)
 
-    // axios.all(txs)
-    // .then(axios.spread(function (...spread) {
-    //   result.push(...spread);
-    //   res.json(result);
-    // }));
-    //
     this.props.bitbox.Transaction.details(JSON.stringify(txs))
     .then((result) => {
-      console.log(result)
       this.setState({
         txs: result
       });
@@ -107,15 +99,21 @@ class Block extends Component {
   }
 
   handlePageClick(data) {
+    this.setState({
+      txs: []
+    });
     let selected = data.selected;
     let transactions = this.state.transactions;
     let txs = [];
     for(let i = selected; i < selected + this.state.perPage; i++) {
       txs.push(this.state.transactions[i]);
     }
-    //
-    this.setState({
-      txs: txs
+    this.props.bitbox.Transaction.details(JSON.stringify(txs))
+    .then((result) => {
+      this.setState({
+        txs: result
+      });
+    }, (err) => { console.log(err);
     });
   };
 

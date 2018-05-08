@@ -67,7 +67,6 @@ class Transaction extends Component {
     let vin = [];
     if(this.state.vin) {
       this.state.vin.forEach((v, ind) => {
-        console.log(v)
         if(v.coinbase) {
           vin.push(
             <li key={ind}>
@@ -81,9 +80,16 @@ class Transaction extends Component {
             <li key={ind}>
               <Link
                 to={`/address/${v.cashAddress}`}>
-                {v.cashAddress}
+                <i className="fas fa-qrcode" /> {v.cashAddress}
               </Link>
               <p><i className="fab fa-bitcoin" /> +{this.props.bitbox.BitcoinCash.toBitcoinCash(v.value)} BCH</p>
+              <p>
+                <Link
+                  to={`/transaction/${v.txid}`}>
+                  <i className="far fa-id-card" /> {v.txid}
+                </Link>
+              </p>
+              <p><i className="fas fa-list-ol" /> {v.vout}</p>
             </li>
           );
         }
@@ -97,7 +103,7 @@ class Transaction extends Component {
           <li key={ind}>
             <Link
               to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
-              {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}
+              <i className="fas fa-qrcode" /> {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}
             </Link>
             <p><i className="fab fa-bitcoin" /> +{v.value} BCH</p>
           </li>

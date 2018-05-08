@@ -1,5 +1,12 @@
 @import 'themeColors';
 
+::selection {
+  background: $lightBlue;
+}
+::-moz-selection {
+  background: $lightBlue;
+}
+
 .right {
   float: right;
 }

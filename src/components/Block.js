@@ -99,28 +99,8 @@ class Block extends Component {
     this.props.bitbox.Transaction.details(JSON.stringify(txs))
     .then((result) => {
       console.log(result)
-      // let transactions = result.tx;
-      //
       this.setState({
-      //   bits: result.bits,
-      //   chainwork: result.chainwork,
-      //   confirmations: result.confirmations,
-      //   difficulty: result.difficulty,
-      //   hash: result.hash,
-      //   height: result.height,
-      //   isMainChain: result.isMainChain,
-      //   merkleroot: result.merkleroot,
-      //   nextblockhash: result.nextblockhash,
-      //   nonce: result.nonce,
-      //   poolInfo: result.poolInfo,
-      //   previousblockhash: result.previousblockhash,
-      //   reward: result.reward,
-      //   size: result.size,
-      //   time: result.time,
-      //   version: result.version,
-        txs: txs
-      //   transactions: result.tx,
-      //   pageCount: Math.floor(result.tx.length / this.state.perPage)
+        txs: result
       });
     }, (err) => { console.log(err);
     });
@@ -150,10 +130,13 @@ class Block extends Component {
           <tr key={ind} className="pure-table-odd">
             <td>
               <Link
-                to={`/transaction/${tx}`}>
-                {tx}
+                to={`/transaction/${tx.txid}`}>
+                {tx.txid}
               </Link>
             </td>
+            <td>{tx.vin.length}</td>
+            <td>{tx.vout.length}</td>
+            <td>{tx.valueOut}</td>
           </tr>
         )
       })
@@ -193,7 +176,10 @@ class Block extends Component {
         <table className="pure-table">
           <thead>
             <tr>
-              <th>txid</th>
+              <th>TXID</th>
+              <th># vin</th>
+              <th># vout</th>
+              <th>value</th>
             </tr>
           </thead>
 

@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import {
   Link,
+  Redirect,
   withRouter
 } from 'react-router-dom';
+
 import Slider from 'react-slick';
 import ReactPaginate from 'react-paginate';
 import {FormattedNumber} from 'react-intl';
@@ -17,7 +19,9 @@ class Block extends Component {
       tx: [],
       id: null,
       poolInfo: {},
-      perPage: 5
+      perPage: 5,
+      redirect: false,
+      txid: null
     };
   }
 
@@ -41,6 +45,13 @@ class Block extends Component {
     });
 
     this.determineEndpoint(id);
+  }
+
+  handleRedirect(txid) {
+    this.setState({
+      redirect: true,
+      txid: txid
+    })
   }
 
   determineEndpoint(id) {
@@ -119,6 +130,12 @@ class Block extends Component {
   };
 
   render() {
+    if(this.state.redirect) {
+      return (<Redirect to={{
+        pathname: `/transaction/${this.state.txid}`
+      }} />)
+    }
+
     let transactions = [];
     let transactionCount;
     if(this.state.txs) {
@@ -126,13 +143,8 @@ class Block extends Component {
 
       this.state.txs.forEach((tx, ind) => {
         transactions.push(
-          <tr key={ind} className="pure-table-odd">
-            <td>
-              <Link
-                to={`/transaction/${tx.txid}`}>
-                {tx.txid}
-              </Link>
-            </td>
+          <tr key={ind} onClick={this.handleRedirect.bind(this, tx.txid)}>
+            <td>{tx.txid}</td>
             <td><FormattedNumber value={tx.vin.length}/></td>
             <td><FormattedNumber value={tx.vout.length}/></td>
             <td><FormattedNumber value={tx.valueOut}/></td>
@@ -196,7 +208,7 @@ class Block extends Component {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className='navTable'>
             {transactions}
           </tbody>
         </table>

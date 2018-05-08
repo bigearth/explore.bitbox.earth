@@ -511,3 +511,11 @@ a, a:visited, a:hover, a:active {
   text-decoration: none;
   color: $lightBlue;
 }
+
+.navTable {
+  cursor: pointer;
+}
+
+table tbody.navTable tr:hover {
+  background: #eee;
+}

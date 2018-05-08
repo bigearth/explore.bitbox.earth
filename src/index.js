@@ -3,4 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import {
+  IntlProvider
+} from 'react-intl';
+
+
+ReactDOM.render(
+  <IntlProvider locale={navigator.language}>
+    <App />
+  </IntlProvider>
+  , document.getElementById('root')
+);

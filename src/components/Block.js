@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Slider from 'react-slick';
 import ReactPaginate from 'react-paginate';
+import {FormattedNumber} from 'react-intl';
 
 import "../styles/homepage.scss";
 
@@ -121,7 +122,7 @@ class Block extends Component {
     let transactions = [];
     let transactionCount;
     if(this.state.txs) {
-      transactionCount = this.state.transactions.length;
+      transactionCount =  <FormattedNumber value={this.state.transactions.length}/>;
 
       this.state.txs.forEach((tx, ind) => {
         transactions.push(
@@ -132,22 +133,37 @@ class Block extends Component {
                 {tx.txid}
               </Link>
             </td>
-            <td>{tx.vin.length}</td>
-            <td>{tx.vout.length}</td>
-            <td>{tx.valueOut}</td>
+            <td><FormattedNumber value={tx.vin.length}/></td>
+            <td><FormattedNumber value={tx.vout.length}/></td>
+            <td><FormattedNumber value={tx.valueOut}/></td>
           </tr>
         )
       })
     }
+
+    let formattedBlockHeight;
+    if(this.state.height) {
+      formattedBlockHeight = <FormattedNumber value={this.state.height}/>;
+    }
+
+    let formattedConfirmations;
+    if(this.state.confirmations) {
+      formattedConfirmations = <FormattedNumber value={this.state.confirmations}/>;
+    }
+
+    let formattedDifficulty;
+    if(this.state.difficulty) {
+      formattedDifficulty = <FormattedNumber value={this.state.difficulty}/>;
+    }
     return (
       <div className='Block'>
-        <h2 className='l-box'><i className="fas fa-cube" /> Block {this.state.height}</h2>
+        <h2 className='l-box'><i className="fas fa-cube" /> Block {formattedBlockHeight}</h2>
         <div className="pure-g">
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="fas fa-code" /> Hash: {this.state.hash}</p>
             <p><i className="far fa-calendar-alt" /> Time: {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
-            <p><i className="far fa-check-square" /> Confirmations: {this.state.confirmations}</p>
-            <p><i className="fas fa-link" /> Difficulty: {this.state.difficulty}</p>
+            <p><i className="far fa-check-square" /> Confirmations: {formattedConfirmations}</p>
+            <p><i className="fas fa-link" /> Difficulty: {formattedDifficulty}</p>
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="far fa-file" /> Size: {this.state.size}</p>

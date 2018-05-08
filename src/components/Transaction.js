@@ -43,10 +43,6 @@ class Transaction extends Component {
   }
 
   render() {
-    let coinbase;
-    if(this.state.isCoinBase) {
-      coinbase = <p><i className="fab fa-bitcoin" /> coinbase</p>
-    }
 
     let formattedBlockHeight;
     if(this.state.blockheight) {
@@ -74,7 +70,11 @@ class Transaction extends Component {
         console.log(v)
         if(v.coinbase) {
           vin.push(
-            <li key={ind}>Coinbase</li>
+            <li key={ind}>
+            <p>Coinbase</p>
+            <p>No Inputs</p>
+            <p>Newly Minted Coins</p>
+            </li>
           );
         } else {
           vin.push(
@@ -83,6 +83,7 @@ class Transaction extends Component {
                 to={`/address/${v.cashAddress}`}>
                 {v.cashAddress}
               </Link>
+              <p><i className="fab fa-bitcoin" /> +{this.props.bitbox.BitcoinCash.toBitcoinCash(v.value)} BCH</p>
             </li>
           );
         }
@@ -98,6 +99,7 @@ class Transaction extends Component {
               to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
               {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}
             </Link>
+            <p><i className="fab fa-bitcoin" /> +{v.value} BCH</p>
           </li>
         );
       });
@@ -111,13 +113,11 @@ class Transaction extends Component {
             <p><i className="fas fa-cube" /> blockhash: {this.state.blockhash}</p>
             <p><i className="fas fa-cubes" /> blockheight: {formattedBlockHeight}</p>
             <p><i className="far fa-check-square" /> confirmations: {formattedConfirmations}</p>
-            {coinbase}
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="far fa-file" /> Size: {formattedSize} bytes</p>
             <p><i className="far fa-calendar-alt" /> Time: {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
             <p><i className="far fa-id-card" /> txid: {this.state.txid}</p>
-            <p><i className="fab fa-bitcoin" /> valueOut: {formattedValue}</p>
           </div>
         </div>
         <div className="pure-g">

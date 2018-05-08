@@ -519,3 +519,7 @@ a, a:visited, a:hover, a:active {
 table tbody.navTable tr:hover {
   background: #eee;
 }
+
+.Transaction li:nth-child(even) {
+  background: #eee;
+}

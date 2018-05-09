@@ -152,7 +152,7 @@ class Block extends Component {
             <td>{tx.txid}</td>
             <td><FormattedNumber value={tx.vin.length}/></td>
             <td><FormattedNumber value={tx.vout.length}/></td>
-            <td><FormattedNumber value={tx.valueOut}/></td>
+            <td><FormattedNumber maximumFractionDigits={8} value={tx.valueOut}/></td>
           </tr>
         )
       })

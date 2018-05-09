@@ -95,7 +95,7 @@ class Transaction extends Component {
                 </Link>
               </td>
               <td>
-              {this.props.bitbox.BitcoinCash.toBitcoinCash(v.value)}
+               <FormattedNumber maximumFractionDigits={8} value={this.props.bitbox.BitcoinCash.toBitcoinCash(v.value)}/>
               </td>
               <td>
                 <Link
@@ -145,7 +145,9 @@ class Transaction extends Component {
           <tr key={ind} className={parsed.output && parsed.output == ind ? "active" : ""}>
             <td>{v.n}</td>
             <td>{output}</td>
-            <td>{v.value}</td>
+            <td>
+              <FormattedNumber maximumFractionDigits={8} value={v.value}/>
+            </td>
           </tr>
         );
       });

@@ -218,7 +218,7 @@ class Transaction extends Component {
           });
           blockpressVals.forEach((val, index) => {
             if(prefix === val[1]) {
-              let asm = `${split[0]} ${memoVals[index][0]} ${split[2]}`
+              let asm = `${split[0]} ${blockpressVals[index][0]} ${split[2]}`
               let fromASM = this.props.bitbox.Script.fromASM(asm)
               let decoded = this.props.bitbox.Script.decode(fromASM)
               obj = {
@@ -228,7 +228,7 @@ class Transaction extends Component {
                 message: decoded[2].toString('ascii')
               };
               let data;
-              if(obj.action === 'setProfileHeader') {
+              if(obj.action === 'setProfileHeader' || obj.action === 'setProfileAvatar') {
                 data = <td><img src={obj.message} /></td>;
               } else {
                 data = <td>{obj.message}</td>;

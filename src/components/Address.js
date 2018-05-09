@@ -134,7 +134,7 @@ class Address extends Component {
             <td>{tx.txid}</td>
             <td><FormattedNumber value={tx.vin.length}/></td>
             <td><FormattedNumber value={tx.vout.length}/></td>
-            <td>{tx.valueIn}</td>
+            <td><FormattedNumber maximumFractionDigits={8} value={tx.valueIn}/></td>
           </tr>
         )
       })
@@ -160,12 +160,12 @@ class Address extends Component {
 
     let formattedBalance;
     if(this.state.balance) {
-      formattedBalance = <FormattedNumber value={this.state.balance}/>;
+      formattedBalance = <FormattedNumber maximumFractionDigits={8} value={this.state.balance}/>;
     }
 
     let formattedReceived;
     if(this.state.totalReceived) {
-      formattedReceived = <FormattedNumber value={this.state.totalReceived}/>;
+      formattedReceived = <FormattedNumber maximumFractionDigits={8} value={this.state.totalReceived}/>;
     }
 
     return (

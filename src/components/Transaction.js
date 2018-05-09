@@ -117,8 +117,8 @@ class Transaction extends Component {
         <thead>
           <tr>
             <th></th>
-            <th>Value (BCH)</th>
-            <th>Address</th>
+            <th><i className="fab fa-bitcoin" /> Value</th>
+            <th><i className="fas fa-qrcode" /> Address</th>
             <th>#</th>
           </tr>
         </thead>
@@ -154,8 +154,8 @@ class Transaction extends Component {
         <thead>
           <tr>
             <th>#</th>
-            <th>Address</th>
-            <th>Value (BCH)</th>
+            <th><i className="fas fa-qrcode" /> Address</th>
+            <th><i className="fab fa-bitcoin" /> Value</th>
           </tr>
         </thead>
         <tbody>
@@ -183,11 +183,11 @@ class Transaction extends Component {
         </div>
         <div className="pure-g">
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
-            <h3 className='content-subhead'>Inputs</h3>
+            <h3 className='content-subhead'><i className="fas fa-long-arrow-alt-down" /> Inputs</h3>
             {vinTable}
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
-            <h3 className='content-subhead'>Outputs</h3>
+            <h3 className='content-subhead'><i className="fas fa-long-arrow-alt-up" /> Outputs</h3>
             {voutTable}
           </div>
         </div>

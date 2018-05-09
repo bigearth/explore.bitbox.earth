@@ -124,12 +124,6 @@ class Address extends Component {
       transactionCount = <FormattedNumber value={this.state.transactions.length}/>;
 
       this.state.txs.forEach((tx, ind) => {
-        let val = <td className='plus'><FormattedNumber value={tx.valueOut}/></td>;
-        tx.vin.forEach((v) => {
-          if(v.cashAddress === this.state.cashAddress) {
-            val = <td className='minus'><FormattedNumber value={tx.valueOut}/></td>;
-          }
-        })
         // if(tx.vin[0].cashAddress === this.state.cashAddress) {
         //   val = <td className='plus'><FormattedNumber value={tx.valueOut}/></td>;
         // } else {
@@ -140,7 +134,7 @@ class Address extends Component {
             <td>{tx.txid}</td>
             <td><FormattedNumber value={tx.vin.length}/></td>
             <td><FormattedNumber value={tx.vout.length}/></td>
-            {val}
+            <td>{tx.valueIn}</td>
           </tr>
         )
       })

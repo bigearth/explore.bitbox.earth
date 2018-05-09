@@ -23,7 +23,7 @@ class Homepage extends Component {
   }
 
   componentDidMount() {
-    document.title = "BITBOX by EARTH - Supercharge your Bitcoin Cash workflow";
+    document.title = "EXPLORE - Bitcoin Cash Block Explorer by BITBOX.";
 
     // this.props.bitbox.Blockchain.getBlockCount()
     // .then((result) => {

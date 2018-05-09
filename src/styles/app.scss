@@ -71,7 +71,7 @@
 }
 
 .pure-table tr {
-  border-style: solid;
+  border-style: none;
   border-color: #2d3e50;
   border-width: 1px 0 0 0;
 }
@@ -498,11 +498,7 @@ table tbody.navTable tr:hover td {
   color: white;
 }
 
-.Transaction li:nth-child(even) {
-  background: #eee;
-}
-
-.Address tr:nth-child(even), .Block tr:nth-child(even) {
+.Address tbody tr:nth-child(odd), .Block tbody tr:nth-child(odd), .Transaction li:nth-child(odd) {
   background: #eee;
 }
 
@@ -557,4 +553,9 @@ margin-left: auto;
 
 .pure-table td.minus {
   color: red;
+}
+
+.pure-table tr, .pure-table tbody {
+  border: none;
+  border-color: #7f8c8d;
 }

@@ -38,12 +38,9 @@ class Address extends Component {
       this.setState({
         legacyAddress: result.legacyAddress,
         cashAddress: result.cashAddress,
-        balance: result.balance,
-        balanceSat: result.balanceSat,
+        balance: result.balance || "0",
         totalReceived: result.totalReceived,
-        totalReceivedSat: result.totalReceivedSat,
         totalSent: result.total,
-        totalSentSat: result.totalSentSat,
         transactions: result.transactions,
         txApperances: result.txApperances,
         unconfirmedBalance: result.unconfirmedBalance,

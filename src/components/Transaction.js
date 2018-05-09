@@ -27,6 +27,29 @@ class Transaction extends Component {
       id: id
     });
 
+    this.fetchTransactionData(id);
+  }
+
+  componentWillReceiveProps(props) {
+    let id = props.match.params.id;
+    document.title = `Transaction ${id} - Explore by BITBOX`;
+    this.setState({
+      id: id,
+      blockhash: '',
+      blockheight: '',
+      confirmations: '',
+      size: '',
+      time: '',
+      txid: '',
+      valueOut: '',
+      vin: [],
+      vout: []
+    });
+
+    this.fetchTransactionData(id);
+  }
+
+  fetchTransactionData(id) {
     this.props.bitbox.Transaction.details(id)
     .then((result) => {
       this.setState({

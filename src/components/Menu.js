@@ -53,6 +53,9 @@ class Menu extends Component {
 
   handleSubmit(searchTerm, event) {
     if(searchTerm.length === 54 || searchTerm.length === 42 || searchTerm.length === 34) {
+        this.setState({
+          searchTerm: ''
+        });
         this.props.history.push(`/address/${searchTerm}`)
     } else {
         this.props.bitbox.Blockchain.getBlockHash(searchTerm)

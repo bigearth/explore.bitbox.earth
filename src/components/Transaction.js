@@ -106,6 +106,8 @@ class Transaction extends Component {
             <tr key={ind} className={parsed.input && parsed.input == ind ? "active" : ""}>
               <td>Coinbase</td>
               <td>No Inputs</td>
+              <td></td>
+              <td></td>
             </tr>
           );
         } else {
@@ -126,7 +128,7 @@ class Transaction extends Component {
                   {this.props.bitbox.Address.toCashAddress(v.cashAddress, false)}
                 </Link>
               </td>
-              <td >
+              <td>
               {v.n}
               </td>
             </tr>
@@ -156,14 +158,52 @@ class Transaction extends Component {
     if(this.state.vout) {
       this.state.vout.forEach((v, ind) => {
         let output;
+        let nulldata;
         if(v.scriptPubKey.addresses && v.scriptPubKey.addresses.length > 0) {
           output = <Link
             to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
             {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0], false)}
           </Link>;
         } else {
-          output = v.scriptPubKey.asm;
+          let op = v.scriptPubKey.asm;
+
+          let memo = {
+            setName: ['6d01', 365],
+            postMemo: ['6d02', 621],
+            reply: ['6d03', 877],
+            like: ['6d04', 1133],
+            setProfileText: ['6d05', 1389],
+            follow: ['6d06', 1645],
+            unfollow: ['6d07', 1901]
+          }
+
+          let split = op.split(" ");
+          let prefix = +split[1];
+          let keys = Object.keys(memo);
+          let vals = Object.values(memo);
+          let obj;
+          vals.forEach((val, index) => {
+            if(prefix === val[1]) {
+              let asm = `${split[0]} ${vals[index][0]} ${split[2]}`
+              let fromASM = this.props.bitbox.Script.fromASM(asm)
+              let decoded = this.props.bitbox.Script.decode(fromASM)
+              obj = {
+                asm: asm,
+                prefix: vals[index][0],
+                action: keys[index],
+                message: decoded[2].toString('ascii')
+              };
+              nulldata = <tr key={ind+1} className={parsed.output && parsed.output == ind ? "active" : ""}>
+                  <td>MEMO:</td>
+                  <td>{obj.message}</td>
+                  <td>
+                  </td>
+                </tr>
+            }
+          });
+          output = obj.asm;
         }
+
         voutBody.push(
           <tr key={ind} className={parsed.output && parsed.output == ind ? "active" : ""}>
             <td>{v.n}</td>
@@ -173,6 +213,9 @@ class Transaction extends Component {
             </td>
           </tr>
         );
+        if(nulldata) {
+          voutBody.push(nulldata);
+        }
       });
     }
 

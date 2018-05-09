@@ -65,19 +65,19 @@ class Homepage extends Component {
     if(searchTerm.length === 54 || searchTerm.length === 42 || searchTerm.length === 34) {
         this.props.history.push(`/address/${searchTerm}`)
     } else {
-        this.props.bitbox.Blockchain.getBlockHash(searchTerm)
-        .then((result) => {
-          this.props.history.push(`/block/${searchTerm}`)
-        }, (err) => {
-          console.log('2', err);
-        });
+      this.props.bitbox.Transaction.details(searchTerm)
+      .then((result) => {
+        this.props.history.push(`/transaction/${searchTerm}`)
+      }, (err) => {
+        console.log('4', err);
+      });
 
-        this.props.bitbox.Transaction.details(searchTerm)
-        .then((result) => {
-          this.props.history.push(`/transaction/${searchTerm}`)
-        }, (err) => {
-          console.log('4', err);
-        });
+      this.props.bitbox.Blockchain.getBlockHash(searchTerm)
+      .then((result) => {
+        this.props.history.push(`/block/${searchTerm}`)
+      }, (err) => {
+        console.log('2', err);
+      });
     }
     event.preventDefault();
   }

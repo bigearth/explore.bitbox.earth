@@ -111,7 +111,7 @@ class Transaction extends Component {
     }
 
     return (
-      <div className='Transaction'>
+      <div className='Transaction container'>
         <h2 className='l-box'><i className="fas fa-exchange-alt" /> Transaction {this.state.id}</h2>
         <div className="pure-g">
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">

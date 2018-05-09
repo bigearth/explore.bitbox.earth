@@ -128,12 +128,24 @@ class Address extends Component {
       transactionCount = <FormattedNumber value={this.state.transactions.length}/>;
 
       this.state.txs.forEach((tx, ind) => {
+        console.log(tx)
+        let val = <td className='plus'><FormattedNumber value={tx.valueOut}/></td>;
+        tx.vin.forEach((v) => {
+          if(tx.vin[0].cashAddress === this.state.cashAddress) {
+            val = <td className='minus'><FormattedNumber value={tx.valueOut}/></td>;
+          }
+        })
+        // if(tx.vin[0].cashAddress === this.state.cashAddress) {
+        //   val = <td className='plus'><FormattedNumber value={tx.valueOut}/></td>;
+        // } else {
+        //   val = <td className='minus'><FormattedNumber value={tx.valueOut}/></td>;
+        // }
         transactions.push(
           <tr key={ind} className="" onClick={this.handleRedirect.bind(this, tx.txid)}>
             <td>{tx.txid}</td>
             <td><FormattedNumber value={tx.vin.length}/></td>
             <td><FormattedNumber value={tx.vout.length}/></td>
-            <td><FormattedNumber value={tx.valueOut}/></td>
+            {val}
           </tr>
         )
       })

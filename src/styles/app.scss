@@ -550,3 +550,11 @@ margin-left: auto;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.pure-table td.plus {
+  color: green;
+}
+
+.pure-table td.minus {
+  color: red;
+}

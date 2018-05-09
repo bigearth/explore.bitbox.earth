@@ -516,10 +516,18 @@ a, a:visited, a:hover, a:active {
 }
 
 table tbody.navTable tr:hover {
-  background: #eee;
+  background: $lightBlue;
+}
+
+table tbody.navTable tr:hover td {
+  color: white;
 }
 
 .Transaction li:nth-child(even) {
+  background: #eee;
+}
+
+.Address tr:nth-child(even) {
   background: #eee;
 }
 
@@ -543,6 +551,15 @@ margin-left: auto;
 .container {
   width: 1170px;
 }
+}
+
+.pure-table thead {
+  font-weight: bold;
+}
+
+.pure-table td {
+  color: $lightGrey;
+  font-weight: 200;
 }
 
 .pure-table thead {

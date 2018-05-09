@@ -125,7 +125,7 @@ class Address extends Component {
       qr = <QRCode value={this.state.id} />;
       cashAddr = <p>Cash: {this.state.cashAddress}</p>;
       legacy = <p>Legacy: {this.state.legacyAddress}</p>;
-      transactionCount = this.state.transactions.length;
+      transactionCount = <FormattedNumber value={this.state.transactions.length}/>;
 
       this.state.txs.forEach((tx, ind) => {
         transactions.push(
@@ -157,6 +157,16 @@ class Address extends Component {
       </table>;
     }
 
+    let formattedBalance;
+    if(this.state.balance) {
+      formattedBalance = <FormattedNumber value={this.state.balance}/>;
+    }
+
+    let formattedReceived;
+    if(this.state.totalReceived) {
+      formattedReceived = <FormattedNumber value={this.state.totalReceived}/>;
+    }
+
     return (
       <div className='Address container'>
         <div className="pure-g">
@@ -169,8 +179,8 @@ class Address extends Component {
             {legacy}
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-4 pure-u-lg-1-4">
-            <p><i className="fab fa-bitcoin" /> Balance: {this.state.balance}</p>
-            <p><i className="fas fa-arrow-up" /> Total Received: {this.state.totalReceived}</p>
+            <p><i className="fab fa-bitcoin" /> Balance: {formattedBalance}</p>
+            <p><i className="fas fa-arrow-up" /> Total Received: {formattedReceived}</p>
           </div>
         </div>
         <h2 className='l-box'><i className="fas fa-exchange-alt" />  Transactions {transactionCount}</h2>

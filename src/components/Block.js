@@ -85,7 +85,7 @@ class Block extends Component {
         poolInfo: result.poolInfo,
         previousblockhash: result.previousblockhash,
         reward: result.reward,
-        size: result.size,
+        size: result.size / 1000,
         time: result.time,
         version: result.version,
         transactions: result.tx,
@@ -183,7 +183,7 @@ class Block extends Component {
             <p><i className="fas fa-link" /> Difficulty: {formattedDifficulty}</p>
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
-            <p><i className="far fa-file" /> Size: {this.state.size}</p>
+            <p><i className="far fa-file" /> Size: {this.state.size} kb</p>
             <p><i className="fab fa-bitcoin" /> Reward: {this.state.reward}</p>
             <p><i className="fas fa-arrow-right" /> next:
               <Link
@@ -200,7 +200,6 @@ class Block extends Component {
             <p><i className="fas fa-wrench" /> Miner: <a href={this.state.poolInfo.url}>{this.state.poolInfo.poolName}</a></p>
           </div>
         </div>
-
 
         <h2 className='l-box'><i className="fas fa-exchange-alt" />  Transactions {transactionCount}</h2>
         <table className="pure-table">

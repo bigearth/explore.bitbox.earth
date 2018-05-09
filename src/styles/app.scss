@@ -91,18 +91,6 @@
   font-weight: normal;
 }
 
-.AddressDetails td, .Blocks td {
-  padding: 1.25em 1em;
-}
-
-.AddressDetails td.important .subheader, .Blocks td.important .subheader {
-  font-size: 0.6em;
-}
-
-.AddressDetails td.important, .Blocks td.important {
-  font-size: 1.3em;
-}
-
 .pure-button {
   background-color: #6FBEF3;
 }
@@ -146,19 +134,6 @@
 
 .HeaderBlockDetails.pure-table td:first-of-type .subheader {
   color: white;
-}
-
-.Blocks td {
-  cursor: pointer;
-}
-
-.Blocks tr:hover {
-  background: #eee;
-  cursor: pointer;
-}
-
-.Blocks tr:hover td:first-of-type {
-  background: #f39d6f;
 }
 
 .HeaderBlockDetails.pure-table tr:first-of-type td {
@@ -568,4 +543,10 @@ margin-left: auto;
 
 .pure-table thead th {
   border: none;
+}
+
+.Block .l-box p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

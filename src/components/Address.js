@@ -79,7 +79,6 @@ class Address extends Component {
 
     this.props.bitbox.Transaction.details(JSON.stringify(txs))
     .then((result) => {
-      console.log(result)
       this.setState({
         txs: result
       });
@@ -128,10 +127,9 @@ class Address extends Component {
       transactionCount = <FormattedNumber value={this.state.transactions.length}/>;
 
       this.state.txs.forEach((tx, ind) => {
-        console.log(tx)
         let val = <td className='plus'><FormattedNumber value={tx.valueOut}/></td>;
         tx.vin.forEach((v) => {
-          if(tx.vin[0].cashAddress === this.state.cashAddress) {
+          if(v.cashAddress === this.state.cashAddress) {
             val = <td className='minus'><FormattedNumber value={tx.valueOut}/></td>;
           }
         })

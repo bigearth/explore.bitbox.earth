@@ -132,17 +132,19 @@ class Transaction extends Component {
     let voutBody = [];
     if(this.state.vout) {
       this.state.vout.forEach((v, ind) => {
+        let output;
+        if(v.scriptPubKey.addresses && v.scriptPubKey.addresses.length > 0) {
+          output = <Link
+            to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
+            {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0], false)}
+          </Link>;
+        } else {
+          output = v.scriptPubKey.asm;
+        }
         voutBody.push(
           <tr key={ind} className={parsed.output && parsed.output == ind ? "active" : ""}>
-            <td>
-            {v.n}
-            </td>
-            <td>
-              <Link
-                to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
-                {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0], false)}
-              </Link>
-            </td>
+            <td>{v.n}</td>
+            <td>{output}</td>
             <td>{v.value}</td>
           </tr>
         );

@@ -183,7 +183,11 @@ class Transaction extends Component {
             reply: ['8d03', 909],
             like: ['8d04', 1165],
             follow: ['8d06', 1677],
-            unfollow: ['8d07', 2189]
+            unfollow: ['8d07', 1933],
+            setProfileHeader: ['8d08', 2189],
+            createMediaPost: ['8d09', 2445],
+            setProfileAvatar: ['8d10', 4237],
+            createPostInCommunity: ['8d11', 4493]
           }
 
           let split = op.split(" ");
@@ -220,12 +224,18 @@ class Transaction extends Component {
               obj = {
                 asm: asm,
                 prefix: blockpressVals[index][0],
-                action: blockpressVals[index],
+                action: blockpressKeys[index],
                 message: decoded[2].toString('ascii')
               };
+              let data;
+              if(obj.action === 'setProfileHeader') {
+                data = <td><img src={obj.message} /></td>;
+              } else {
+                data = <td>{obj.message}</td>;
+              }
               nulldata = <tr key={ind+2} className={parsed.output && parsed.output == ind ? "active" : ""}>
                   <td>Blockpress:</td>
-                  <td>{obj.message}</td>
+                  {data}
                   <td>
                   </td>
                 </tr>

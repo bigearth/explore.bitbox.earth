@@ -42,11 +42,40 @@ class Address extends Component {
         totalReceived: result.totalReceived,
         totalSent: result.total,
         transactions: result.transactions,
-        txApperances: result.txApperances,
-        unconfirmedBalance: result.unconfirmedBalance,
         txs: [],
-        unconfirmedBalanceSat: result.unconfirmedBalanceSat,
-        unconfirmedTxApperances: result.unconfirmedTxApperances,
+        pageCount: Math.floor(result.transactions.length / this.state.perPage)
+      });
+    }, (err) => { console.log(err);
+    });
+  }
+
+  componentWillReceiveProps(props) {
+    let id = props.match.params.id;
+    document.title = `Address ${id} - Explore by BITBOX`;
+    this.setState({
+      id: id,
+      legacyAddress: '',
+      cashAddress: '',
+      balance: "",
+      totalReceived: '',
+      totalSent: '',
+      transactions: [],
+      txs: [],
+      pageCount: 0
+    });
+
+    this.props.bitbox.Address.details(id)
+    .then((result) => {
+      this.fetchTransactionData(result.transactions);
+
+      this.setState({
+        legacyAddress: result.legacyAddress,
+        cashAddress: result.cashAddress,
+        balance: result.balance || "0",
+        totalReceived: result.totalReceived,
+        totalSent: result.total,
+        transactions: result.transactions,
+        txs: [],
         pageCount: Math.floor(result.transactions.length / this.state.perPage)
       });
     }, (err) => { console.log(err);

@@ -521,6 +521,7 @@ margin-left: auto;
 @media (min-width: 1200px) {
 .container {
   width: 1300px;
+  max-width: 1300px;
 }
 }
 
@@ -541,7 +542,7 @@ margin-left: auto;
   border: none;
 }
 
-.Block .l-box p {
+.Block .l-box p, .Transaction .address {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

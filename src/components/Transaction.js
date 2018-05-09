@@ -177,24 +177,54 @@ class Transaction extends Component {
             unfollow: ['6d07', 1901]
           }
 
+          let blockpress = {
+            setName: ['8d01', 397],
+            postMemo: ['8d02', 653],
+            reply: ['8d03', 909],
+            like: ['8d04', 1165],
+            follow: ['8d06', 1677],
+            unfollow: ['8d07', 2189]
+          }
+
           let split = op.split(" ");
           let prefix = +split[1];
-          let keys = Object.keys(memo);
-          let vals = Object.values(memo);
+          let memoKeys = Object.keys(memo);
+          let memoVals = Object.values(memo);
+          let blockpressKeys = Object.keys(blockpress);
+          let blockpressVals = Object.values(blockpress);
           let obj;
-          vals.forEach((val, index) => {
+          memoVals.forEach((val, index) => {
             if(prefix === val[1]) {
-              let asm = `${split[0]} ${vals[index][0]} ${split[2]}`
+              let asm = `${split[0]} ${memoVals[index][0]} ${split[2]}`
               let fromASM = this.props.bitbox.Script.fromASM(asm)
               let decoded = this.props.bitbox.Script.decode(fromASM)
               obj = {
                 asm: asm,
-                prefix: vals[index][0],
-                action: keys[index],
+                prefix: memoVals[index][0],
+                action: memoKeys[index],
                 message: decoded[2].toString('ascii')
               };
               nulldata = <tr key={ind+1} className={parsed.output && parsed.output == ind ? "active" : ""}>
                   <td>MEMO:</td>
+                  <td>{obj.message}</td>
+                  <td>
+                  </td>
+                </tr>
+            }
+          });
+          blockpressVals.forEach((val, index) => {
+            if(prefix === val[1]) {
+              let asm = `${split[0]} ${memoVals[index][0]} ${split[2]}`
+              let fromASM = this.props.bitbox.Script.fromASM(asm)
+              let decoded = this.props.bitbox.Script.decode(fromASM)
+              obj = {
+                asm: asm,
+                prefix: blockpressVals[index][0],
+                action: blockpressVals[index],
+                message: decoded[2].toString('ascii')
+              };
+              nulldata = <tr key={ind+2} className={parsed.output && parsed.output == ind ? "active" : ""}>
+                  <td>Blockpress:</td>
                   <td>{obj.message}</td>
                   <td>
                   </td>
@@ -207,7 +237,7 @@ class Transaction extends Component {
         voutBody.push(
           <tr key={ind} className={parsed.output && parsed.output == ind ? "active" : ""}>
             <td>{v.n}</td>
-            <td>{output}</td>
+            <td className='address'>{output}</td>
             <td>
               <FormattedNumber maximumFractionDigits={8} value={v.value}/>
             </td>

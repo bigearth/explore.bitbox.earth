@@ -14,30 +14,28 @@ import "../styles/homepage.scss";
 class Address extends Component {
   constructor(props) {
     super(props);
+    let id = this.props.match.params.id;
+    document.title = `Address ${id} - Explore by BITBOX`;
     this.state = {
+      id: id,
+      legacyAddress: this.props.bitbox.Address.toLegacyAddress(id),
+      cashAddress: this.props.bitbox.Address.toCashAddress(id),
       tx: [],
       perPage: 10,
       offset: 0,
       transactions: [],
       redirect: false,
-      txid: null
+      txid: null,
+      txs: []
     };
   }
 
   componentDidMount() {
-    let id = this.props.match.params.id;
-    document.title = `Address ${id} - Explore by BITBOX`;
-    this.setState({
-      id: id
-    });
-
-    this.props.bitbox.Address.details(id)
+    this.props.bitbox.Address.details(this.state.id)
     .then((result) => {
       this.fetchTransactionData(result.transactions);
 
       this.setState({
-        legacyAddress: result.legacyAddress,
-        cashAddress: result.cashAddress,
         balance: result.balance || "0",
         totalReceived: result.totalReceived,
         totalSent: result.total,
@@ -54,8 +52,8 @@ class Address extends Component {
     document.title = `Address ${id} - Explore by BITBOX`;
     this.setState({
       id: id,
-      legacyAddress: '',
-      cashAddress: '',
+      legacyAddress: this.props.bitbox.Address.toLegacyAddress(id),
+      cashAddress: this.props.bitbox.Address.toCashAddress(id),
       balance: "",
       totalReceived: '',
       totalSent: '',
@@ -69,8 +67,6 @@ class Address extends Component {
       this.fetchTransactionData(result.transactions);
 
       this.setState({
-        legacyAddress: result.legacyAddress,
-        cashAddress: result.cashAddress,
         balance: result.balance || "0",
         totalReceived: result.totalReceived,
         totalSent: result.total,
@@ -141,15 +137,9 @@ class Address extends Component {
       }} />)
     }
 
-    let qr;
-    let cashAddr;
-    let legacy;
     let transactions = [];
     let transactionCount;
     if(this.state.cashAddress) {
-      qr = <QRCode value={this.state.id} />;
-      cashAddr = <p>Cash: {this.state.cashAddress}</p>;
-      legacy = <p>Legacy: {this.state.legacyAddress}</p>;
       transactionCount = <FormattedNumber value={this.state.transactions.length}/>;
 
       this.state.txs.forEach((tx, ind) => {
@@ -201,12 +191,12 @@ class Address extends Component {
       <div className='Address container'>
         <div className="pure-g">
           <div className="l-box pure-u-1 pure-u-md-1-6 pure-u-lg-1-6">
-            {qr}
+            <QRCode value={this.state.id} />
           </div>
           <div className="l-box pure-u-1 pure-u-md-7-12 pure-u-lg-7-12">
             <h2 className=''> Address</h2>
-            {cashAddr}
-            {legacy}
+              <p>Cash: {this.state.cashAddress}</p>
+              <p>Legacy: {this.state.legacyAddress}</p>
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-4 pure-u-lg-1-4">
             <p><i className="fab fa-bitcoin" /> Balance: {formattedBalance}</p>

@@ -490,16 +490,16 @@ a, a:visited, a:hover, a:active {
   cursor: pointer;
 }
 
-table tbody.navTable tr:hover {
+.Address tbody tr:nth-child(odd), .Block tbody tr:nth-child(odd), .Transaction tbody tr:nth-child(odd) {
+  background: #eee;
+}
+
+table tbody.navTable tr:hover, .Transaction table tbody .active {
   background: $lightBlue;
 }
 
-table tbody.navTable tr:hover td {
+table tbody.navTable tr:hover td, .Transaction table tbody .active td, .Transaction table tbody .active td a, .Transaction table tbody .active td a:visited, , .Transaction table tbody .active td a:hover, , .Transaction table tbody .active td a:active {
   color: white;
-}
-
-.Address tbody tr:nth-child(odd), .Block tbody tr:nth-child(odd), .Transaction tbody tr:nth-child(odd) {
-  background: #eee;
 }
 
 .container {

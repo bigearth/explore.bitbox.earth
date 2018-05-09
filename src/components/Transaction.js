@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import Slider from 'react-slick';
 import {FormattedNumber} from 'react-intl';
+import queryString from 'query-string';
 
 import "../styles/homepage.scss";
 
@@ -44,6 +45,7 @@ class Transaction extends Component {
   }
 
   render() {
+    let parsed = queryString.parse(this.props.location.search);
 
     let formattedBlockHeight;
     if(this.state.blockheight) {
@@ -76,17 +78,16 @@ class Transaction extends Component {
     let vinBody = [];
     if(this.state.vin) {
       this.state.vin.forEach((v, ind) => {
-        console.log(v)
         if(v.coinbase) {
           vinBody.push(
-            <tr key={ind}>
+            <tr key={ind} className={parsed.input && parsed.input == ind ? "active" : ""}>
               <td>Coinbase</td>
               <td>No Inputs</td>
             </tr>
           );
         } else {
           vinBody.push(
-            <tr key={ind}>
+            <tr key={ind} className={parsed.input && parsed.input == ind ? "active" : ""}>
               <td>
                 <Link
                   to={`/transaction/${v.txid}`}>
@@ -132,7 +133,7 @@ class Transaction extends Component {
     if(this.state.vout) {
       this.state.vout.forEach((v, ind) => {
         voutBody.push(
-          <tr key={ind}>
+          <tr key={ind} className={parsed.output && parsed.output == ind ? "active" : ""}>
             <td>
             {v.n}
             </td>

@@ -13,7 +13,9 @@ class Transaction extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tx: []
+      tx: [],
+      vin: [],
+      vout: []
     };
   }
 
@@ -63,51 +65,103 @@ class Transaction extends Component {
       formattedSize = this.state.size;
     }
 
-    let vin = [];
+    let date;
+    if(this.state.time) {
+      date = moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a');
+    }
+        // <tbody className='navTable'>
+        //   {transactions}
+        // </tbody>
+
+    let vinBody = [];
     if(this.state.vin) {
       this.state.vin.forEach((v, ind) => {
+        console.log(v)
         if(v.coinbase) {
-          vin.push(
-            <li key={ind}>
-            <p>Coinbase</p>
-            <p>No Inputs</p>
-            <p>Newly Minted Coins</p>
-            </li>
+          vinBody.push(
+            <tr key={ind}>
+              <td>Coinbase</td>
+              <td>No Inputs</td>
+            </tr>
           );
         } else {
-          vin.push(
-            <li key={ind}>
-              <Link
-                to={`/address/${v.cashAddress}`}>
-                <i className="fas fa-qrcode" /> {v.cashAddress}
-              </Link>
-              <p><i className="fab fa-bitcoin" /> +{this.props.bitbox.BitcoinCash.toBitcoinCash(v.value)} BCH</p>
-              <p>
+          vinBody.push(
+            <tr key={ind}>
+              <td>
                 <Link
                   to={`/transaction/${v.txid}`}>
-                  <i className="far fa-id-card" /> {v.txid}
+                  <i className="fas fa-chevron-left" />
                 </Link>
-              </p>
-              <p><i className="fas fa-list-ol" /> {v.vout}</p>
-            </li>
+              </td>
+              <td>
+              {this.props.bitbox.BitcoinCash.toBitcoinCash(v.value)}
+              </td>
+              <td>
+                <Link
+                  to={`/address/${v.cashAddress}`}>
+                  {this.props.bitbox.Address.toCashAddress(v.cashAddress, false)}
+                </Link>
+              </td>
+              <td >
+              {v.n}
+              </td>
+            </tr>
           );
         }
       });
     }
 
-    let vout = [];
+    let vinTable;
+    if(this.state.vin.length > 0) {
+      vinTable = <table className="pure-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Value (BCH)</th>
+            <th>Address</th>
+            <th>#</th>
+          </tr>
+        </thead>
+        <tbody>
+          {vinBody}
+        </tbody>
+      </table>;
+    }
+
+    let voutBody = [];
     if(this.state.vout) {
       this.state.vout.forEach((v, ind) => {
-        vout.push(
-          <li key={ind}>
-            <Link
-              to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
-              <i className="fas fa-qrcode" /> {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}
-            </Link>
-            <p><i className="fab fa-bitcoin" /> +{v.value} BCH</p>
-          </li>
+        voutBody.push(
+          <tr key={ind}>
+            <td>
+            {v.n}
+            </td>
+            <td>
+              <Link
+                to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
+                {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0], false)}
+              </Link>
+            </td>
+            <td>{v.value}</td>
+          </tr>
         );
       });
+    }
+
+    let voutTable;
+    if(this.state.vout.length > 0) {
+      voutTable = <table className="pure-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Address</th>
+            <th>Value (BCH)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {voutBody}
+        </tbody>
+      </table>;
     }
 
     return (
@@ -124,21 +178,17 @@ class Transaction extends Component {
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <p><i className="far fa-file" /> Size: {formattedSize} kb</p>
-            <p><i className="far fa-calendar-alt" /> {moment.unix(this.state.time).format('MMMM Do YYYY, h:mm:ss a')}</p>
+            <p><i className="far fa-calendar-alt" /> {date}</p>
           </div>
         </div>
         <div className="pure-g">
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <h3 className='content-subhead'>Inputs</h3>
-            <ul>
-              {vin}
-            </ul>
+            {vinTable}
           </div>
           <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
             <h3 className='content-subhead'>Outputs</h3>
-            <ul>
-              {vout}
-            </ul>
+            {voutTable}
           </div>
         </div>
       </div>

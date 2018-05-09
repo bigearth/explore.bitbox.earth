@@ -498,7 +498,7 @@ table tbody.navTable tr:hover td {
   color: white;
 }
 
-.Address tbody tr:nth-child(odd), .Block tbody tr:nth-child(odd), .Transaction li:nth-child(odd) {
+.Address tbody tr:nth-child(odd), .Block tbody tr:nth-child(odd), .Transaction tbody tr:nth-child(odd) {
   background: #eee;
 }
 
@@ -520,7 +520,7 @@ margin-left: auto;
 }
 @media (min-width: 1200px) {
 .container {
-  width: 1170px;
+  width: 1300px;
 }
 }
 

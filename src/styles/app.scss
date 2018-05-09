@@ -542,7 +542,7 @@ margin-left: auto;
   border: none;
 }
 
-.Block .l-box p, .Transaction .address {
+.Block .l-box p {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -563,4 +563,10 @@ margin-left: auto;
 
 .Transaction img {
   width: 100px;
+}
+
+.Transaction .outputs {
+  overflow: scroll;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

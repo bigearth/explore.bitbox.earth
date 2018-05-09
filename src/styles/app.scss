@@ -527,7 +527,7 @@ table tbody.navTable tr:hover td {
   background: #eee;
 }
 
-.Address tr:nth-child(even) {
+.Address tr:nth-child(even), .Block tr:nth-child(even) {
   background: #eee;
 }
 

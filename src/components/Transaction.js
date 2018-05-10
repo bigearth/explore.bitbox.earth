@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import {
   Link,
+  Redirect,
   withRouter
 } from 'react-router-dom';
 import Slider from 'react-slick';
@@ -15,6 +16,8 @@ class Transaction extends Component {
     super(props);
     this.state = {
       tx: [],
+      redirect: false,
+      id: null,
       vin: [],
       vout: []
     };
@@ -43,7 +46,8 @@ class Transaction extends Component {
       txid: '',
       valueOut: '',
       vin: [],
-      vout: []
+      vout: [],
+      path: ''
     });
 
     this.fetchTransactionData(id);
@@ -67,7 +71,33 @@ class Transaction extends Component {
     });
   }
 
+  handleRedirect(type, id, action) {
+    let path;
+    if(type === 'memo') {
+      if(action === 'setName' || action === 'like' || action === 'setProfileText' || action === 'follow' || action === 'unfollow') {
+        path = "https://memo.cash";
+      } else {
+        path = `https://memo.cash/post/${id}`;
+      }
+    } else {
+      if(action === 'setName' || action === 'follow' || action === 'unfollow' || action === 'setProfileHeader' || action === 'createMediaPost' || 'setProfileAvatar') {
+        path = "https://www.blockpress.com/";
+      } else {
+        path = `https://www.blockpress.com/posts/${id}`;
+      }
+    }
+
+    this.setState({
+      redirect: true,
+      path: path
+    })
+  }
+
   render() {
+    if(this.state.redirect) {
+      window.location = this.state.path;
+    }
+
     let parsed = queryString.parse(this.props.location.search);
 
     let formattedBlockHeight;
@@ -168,27 +198,27 @@ class Transaction extends Component {
           let op = v.scriptPubKey.asm;
 
           let memo = {
-            setName: ['6d01', 365],
-            postMemo: ['6d02', 621],
-            reply: ['6d03', 877],
-            like: ['6d04', 1133],
-            setProfileText: ['6d05', 1389],
-            follow: ['6d06', 1645],
-            unfollow: ['6d07', 1901],
-            postTopicMessage: ['6d0C', 3181]
+            setName: ['6d01', 365, 'Set Name'],
+            postMemo: ['6d02', 621, 'Post Memo'],
+            reply: ['6d03', 877, 'Reply'],
+            like: ['6d04', 1133, 'Like'],
+            setProfileText: ['6d05', 1389, 'Set Profile Text'],
+            follow: ['6d06', 1645, 'Follow'],
+            unfollow: ['6d07', 1901, 'Unfollow'],
+            postTopicMessage: ['6d0C', 3181, 'Post Topic Message']
           }
 
           let blockpress = {
-            setName: ['8d01', 397],
-            postMemo: ['8d02', 653],
-            reply: ['8d03', 909],
-            like: ['8d04', 1165],
-            follow: ['8d06', 1677],
-            unfollow: ['8d07', 1933],
-            setProfileHeader: ['8d08', 2189],
-            createMediaPost: ['8d09', 2445],
-            setProfileAvatar: ['8d10', 4237],
-            createPostInCommunity: ['8d11', 4493]
+            setName: ['8d01', 397, 'Set Name'],
+            createTextPost: ['8d02', 653, 'Create Text Post'],
+            reply: ['8d03', 909, 'Reply'],
+            like: ['8d04', 1165, 'Like'],
+            follow: ['8d06', 1677, 'Follow'],
+            unfollow: ['8d07', 1933, 'Unfollow'],
+            setProfileHeader: ['8d08', 2189, 'Set Profile Header'],
+            createMediaPost: ['8d09', 2445, 'Create Media Post'],
+            setProfileAvatar: ['8d10', 4237, 'Set Profile Avatar'],
+            createPostInCommunity: ['8d11', 4493, 'Create Post in Community']
           }
 
           let split = op.split(" ");
@@ -214,17 +244,25 @@ class Transaction extends Component {
                 action: memoKeys[index],
                 message: decoded[2].toString('ascii')
               };
-              nulldata = <tr key={ind+1} className={parsed.output && parsed.output == ind ? "active" : ""}>
-                  <td><img src={'/assets/memo.jpg'} /></td>
-                  <td>{obj.message}</td>
-                  <td>
+              nulldata = <tr onClick={this.handleRedirect.bind(this, 'memo', this.state.id, obj.action)} key={ind+1} className={parsed.output && parsed.output == ind ? "active" : ""}>
+                  <td className='cursor'><img src={'/assets/memo.jpg'} /></td>
+                  <td className='cursor'><span className='title'>{memoVals[index][2]}</span> <br />{obj.message}</td>
+                  <td className='cursor'>
                   </td>
                 </tr>
             }
           });
           blockpressVals.forEach((val, index) => {
             if(prefix === val[1]) {
-              let asm = `${split[0]} ${blockpressVals[index][0]} ${split[2]}`
+              let asm
+              if(prefix === 2445) {
+                asm = `${split[0]} ${blockpressVals[index][0]} ${split[3]}`;
+              } else if(prefix === 4493) {
+                asm = `${split[0]} ${blockpressVals[index][0]} ${split[3]}`;
+              } else {
+                asm = `${split[0]} ${blockpressVals[index][0]} ${split[2]}`;
+              }
+
               let fromASM = this.props.bitbox.Script.fromASM(asm)
               let decoded = this.props.bitbox.Script.decode(fromASM)
               obj = {
@@ -235,14 +273,14 @@ class Transaction extends Component {
               };
               let data;
               if(obj.action === 'setProfileHeader' || obj.action === 'setProfileAvatar') {
-                data = <td><img src={obj.message} /></td>;
+                data = <img src={obj.message} />;
               } else {
-                data = <td>{obj.message}</td>;
+                data = obj.message;
               }
-              nulldata = <tr key={ind+2} className={parsed.output && parsed.output == ind ? "active" : ""}>
-                  <td><img src={'/assets/blockpress.jpg'} /></td>
-                  {data}
-                  <td>
+              nulldata = <tr onClick={this.handleRedirect.bind(this, 'blockpress', this.state.id, obj.action)} key={ind+2} className={parsed.output && parsed.output == ind ? "active" : ""}>
+                  <td className='cursor'><img src={'/assets/blockpress.jpg'} /></td>
+                  <td className='cursor'><span className='title'>{blockpressVals[index][2]}</span> <br />{data}</td>
+                  <td className='cursor'>
                   </td>
                 </tr>
             }

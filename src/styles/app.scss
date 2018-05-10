@@ -570,3 +570,13 @@ margin-left: auto;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.cursor {
+  cursor: pointer;
+}
+
+.cursor .title {
+  font-weight: 400;
+  font-size: 1.2em;
+  line-height: 1em;
+}

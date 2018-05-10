@@ -174,7 +174,8 @@ class Transaction extends Component {
             like: ['6d04', 1133],
             setProfileText: ['6d05', 1389],
             follow: ['6d06', 1645],
-            unfollow: ['6d07', 1901]
+            unfollow: ['6d07', 1901],
+            postTopicMessage: ['6d0C', 3181]
           }
 
           let blockpress = {

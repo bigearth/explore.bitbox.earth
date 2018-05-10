@@ -209,7 +209,7 @@ class Transaction extends Component {
                 message: decoded[2].toString('ascii')
               };
               nulldata = <tr key={ind+1} className={parsed.output && parsed.output == ind ? "active" : ""}>
-                  <td>MEMO:</td>
+                  <td><img src={'/assets/memo.jpg'} /></td>
                   <td>{obj.message}</td>
                   <td>
                   </td>
@@ -234,7 +234,7 @@ class Transaction extends Component {
                 data = <td>{obj.message}</td>;
               }
               nulldata = <tr key={ind+2} className={parsed.output && parsed.output == ind ? "active" : ""}>
-                  <td>Blockpress:</td>
+                  <td><img src={'/assets/blockpress.jpg'} /></td>
                   {data}
                   <td>
                   </td>

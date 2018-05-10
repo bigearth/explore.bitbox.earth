@@ -199,7 +199,12 @@ class Transaction extends Component {
           let obj;
           memoVals.forEach((val, index) => {
             if(prefix === val[1]) {
-              let asm = `${split[0]} ${memoVals[index][0]} ${split[2]}`
+              let asm
+              if(prefix === 877) {
+                asm = `${split[0]} ${memoVals[index][0]} ${split[3]}`;
+              } else {
+                asm = `${split[0]} ${memoVals[index][0]} ${split[2]}`;
+              }
               let fromASM = this.props.bitbox.Script.fromASM(asm)
               let decoded = this.props.bitbox.Script.decode(fromASM)
               obj = {

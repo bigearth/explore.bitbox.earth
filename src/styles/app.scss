@@ -490,7 +490,7 @@ a, a:visited, a:hover, a:active {
   cursor: pointer;
 }
 
-.Address tbody tr:nth-child(odd), .Block tbody tr:nth-child(odd), .Transaction tbody tr:nth-child(odd) {
+.Address tbody tr:nth-child(odd), .Block tbody tr:nth-child(odd), .Transaction tbody tr:nth-child(odd), .SmallTransactionTable > div:nth-child(odd) {
   background: #eee;
 }
 
@@ -503,26 +503,54 @@ table tbody.navTable tr:hover td, .Transaction table tbody .active td, .Transact
 }
 
 .container {
-padding-right: 15px;
-padding-left: 15px;
-margin-right: auto;
-margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
-@media (min-width: 768px) {
-.container {
-  width: 750px;
+
+@media (min-width: 568px) {
+  .container {
+    width: 545px;
+  }
+  //
+  // .large {
+  //   display: none;
+  // }
 }
+
+@media only screen and (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+
+  .small {
+    display: none;
+  }
 }
+
+@media only screen and (max-width: 768px) {
+
+  .large{
+    display: none;
+  }
+}
+
 @media (min-width: 992px) {
-.container {
-  width: 970px;
+  .container {
+    width: 970px;
+  }
+  //
+  // .small{
+  //   display: none;
+  // }
 }
-}
+
 @media (min-width: 1200px) {
-.container {
-  width: 1300px;
-  max-width: 1300px;
-}
+  .container {
+    width: 1300px;
+    max-width: 1300px;
+  }
 }
 
 .pure-table thead {
@@ -542,7 +570,7 @@ margin-left: auto;
   border: none;
 }
 
-.Block .l-box p {
+.Block .l-box p, .Address .SmallTransactionTable .vout p {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -579,4 +607,8 @@ margin-left: auto;
   font-weight: 400;
   font-size: 1.2em;
   line-height: 1em;
+}
+
+.SmallTransactionTable > div {
+  overflow: hidden;
 }

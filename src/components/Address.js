@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import QRCode from 'qrcode.react';
 import ReactPaginate from 'react-paginate';
+import SmallTransactionTable from './SmallTransactionTable';
 import {FormattedNumber} from 'react-intl';
 
 import "../styles/homepage.scss";
@@ -20,13 +21,12 @@ class Address extends Component {
       id: id,
       legacyAddress: this.props.bitbox.Address.toLegacyAddress(id),
       cashAddress: this.props.bitbox.Address.toCashAddress(id),
-      tx: [],
       perPage: 10,
       offset: 0,
-      transactions: [],
+      allTransactions: [],
       redirect: false,
       txid: null,
-      txs: []
+      subsetTransactions: []
     };
   }
 
@@ -39,8 +39,7 @@ class Address extends Component {
         balance: result.balance || "0",
         totalReceived: result.totalReceived,
         totalSent: result.total,
-        transactions: result.transactions,
-        txs: [],
+        allTransactions: result.transactions,
         pageCount: Math.floor(result.transactions.length / this.state.perPage)
       });
     }, (err) => { console.log(err);
@@ -50,17 +49,8 @@ class Address extends Component {
   componentWillReceiveProps(props) {
     let id = props.match.params.id;
     document.title = `Address ${id} - Explore by BITBOX`;
-    this.setState({
-      id: id,
-      legacyAddress: this.props.bitbox.Address.toLegacyAddress(id),
-      cashAddress: this.props.bitbox.Address.toCashAddress(id),
-      balance: "",
-      totalReceived: '',
-      totalSent: '',
-      transactions: [],
-      txs: [],
-      pageCount: 0
-    });
+
+    this.refreshState(id);
 
     this.props.bitbox.Address.details(id)
     .then((result) => {
@@ -71,10 +61,23 @@ class Address extends Component {
         totalReceived: result.totalReceived,
         totalSent: result.total,
         transactions: result.transactions,
-        txs: [],
         pageCount: Math.floor(result.transactions.length / this.state.perPage)
       });
     }, (err) => { console.log(err);
+    });
+  }
+
+  refreshState(id) {
+    this.setState({
+      id: id,
+      legacyAddress: this.props.bitbox.Address.toLegacyAddress(id),
+      cashAddress: this.props.bitbox.Address.toCashAddress(id),
+      balance: "",
+      totalReceived: '',
+      totalSent: '',
+      transactions: [],
+      subsetTransactions: [],
+      pageCount: 0
     });
   }
 
@@ -86,7 +89,6 @@ class Address extends Component {
   }
 
   fetchTransactionData(transactions) {
-
     let txs = [];
     let upperBound = this.state.perPage;
     if(transactions.length < upperBound) {
@@ -102,7 +104,7 @@ class Address extends Component {
     this.props.bitbox.Transaction.details(JSON.stringify(txs))
     .then((result) => {
       this.setState({
-        txs: result
+        subsetTransactions: result
       });
     }, (err) => { console.log(err);
     });
@@ -110,20 +112,20 @@ class Address extends Component {
 
   handlePageClick(data) {
     this.setState({
-      txs: []
+      subsetTransactions: []
     });
     let selected = data.selected;
-    let transactions = this.state.transactions;
+    let transactions = this.state.allTransactions;
     let txs = [];
-    if(this.state.transactions.length > 0) {
+    if(this.state.allTransactions.length > 0) {
       for(let i = selected; i < selected + this.state.perPage; i++) {
-        txs.push(this.state.transactions[i]);
+        txs.push(this.state.allTransactions[i]);
       }
     }
     this.props.bitbox.Transaction.details(JSON.stringify(txs))
     .then((result) => {
       this.setState({
-        txs: result
+        subsetTransactions: result
       });
     }, (err) => { console.log(err);
     });
@@ -140,9 +142,9 @@ class Address extends Component {
     let transactions = [];
     let transactionCount;
     if(this.state.cashAddress) {
-      transactionCount = <FormattedNumber value={this.state.transactions.length}/>;
+      transactionCount = <FormattedNumber value={this.state.allTransactions.length}/>;
 
-      this.state.txs.forEach((tx, ind) => {
+      this.state.subsetTransactions.forEach((tx, ind) => {
         // if(tx.vin[0].cashAddress === this.state.cashAddress) {
         //   val = <td className='plus'><FormattedNumber value={tx.valueOut}/></td>;
         // } else {
@@ -153,15 +155,20 @@ class Address extends Component {
             <td>{tx.txid}</td>
             <td><FormattedNumber value={tx.vin.length}/></td>
             <td><FormattedNumber value={tx.vout.length}/></td>
-            <td><FormattedNumber maximumFractionDigits={8} value={tx.valueIn}/></td>
+            <td><FormattedNumber maximumFractionDigits={8} value={tx.isCoinBase === true ? tx.valueOut : tx.valueIn}/></td>
           </tr>
         )
       })
     }
 
-    let table;
-    if(this.state.transactions.length > 0) {
-      table = <table className="pure-table">
+    let tableSmall;
+    if(this.state.allTransactions.length > 0) {
+      tableSmall = <SmallTransactionTable transactions={this.state.subsetTransactions} handleRedirect={this.handleRedirect.bind(this)}/>;
+    }
+
+    let tableLarge;
+    if(this.state.allTransactions.length > 0) {
+      tableLarge = <table className="pure-table large">
         <thead>
           <tr>
             <th>TXID</th>
@@ -204,7 +211,8 @@ class Address extends Component {
           </div>
         </div>
         <h2 className='l-box'><i className="fas fa-exchange-alt" />  Transactions {transactionCount}</h2>
-        {table}
+        {tableSmall}
+        {tableLarge}
 
         <ReactPaginate
           previousLabel={"previous"}

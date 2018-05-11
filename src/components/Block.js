@@ -8,6 +8,7 @@ import {
 
 import Slider from 'react-slick';
 import ReactPaginate from 'react-paginate';
+import SmallTransactionTable from './SmallTransactionTable';
 import {FormattedNumber} from 'react-intl';
 
 import "../styles/homepage.scss";
@@ -21,28 +22,19 @@ class Block extends Component {
       poolInfo: {},
       perPage: 5,
       redirect: false,
-      txid: null
+      txid: null,
+      txs: []
     };
   }
 
   componentDidMount() {
     let id = this.props.match.params.id;
-    document.title = `Block ${id} - Explore by this.props.bitbox`;
-    this.setState({
-      id: id,
-      offset: 0
-    });
 
     this.determineEndpoint(id);
   }
 
   componentWillReceiveProps(props) {
     let id = props.match.params.id;
-    document.title = `Block ${id} - Explore by this.props.bitbox`;
-    this.setState({
-      id: id,
-      offset: 0
-    });
 
     this.determineEndpoint(id);
   }
@@ -55,6 +47,12 @@ class Block extends Component {
   }
 
   determineEndpoint(id) {
+    document.title = `Block ${id} - Explore by this.props.bitbox`;
+    this.setState({
+      id: id,
+      offset: 0
+    });
+
     if(id.length !== 64) {
       this.props.bitbox.Blockchain.getBlockHash(id)
       .then((result) => {
@@ -72,22 +70,16 @@ class Block extends Component {
       this.fetchTransactionData(result.tx);
 
       this.setState({
-        bits: result.bits,
-        chainwork: result.chainwork,
         confirmations: result.confirmations,
         difficulty: result.difficulty,
         hash: result.hash,
         height: result.height,
-        isMainChain: result.isMainChain,
-        merkleroot: result.merkleroot,
         nextblockhash: result.nextblockhash,
-        nonce: result.nonce,
         poolInfo: result.poolInfo,
         previousblockhash: result.previousblockhash,
         reward: result.reward,
         size: result.size / 1000,
         time: result.time,
-        version: result.version,
         transactions: result.tx,
         pageCount: Math.floor(result.tx.length / this.state.perPage)
       });
@@ -143,7 +135,7 @@ class Block extends Component {
 
     let transactions = [];
     let transactionCount;
-    if(this.state.txs) {
+    if(this.state.transactions) {
       transactionCount =  <FormattedNumber value={this.state.transactions.length}/>;
 
       this.state.txs.forEach((tx, ind) => {
@@ -156,6 +148,29 @@ class Block extends Component {
           </tr>
         )
       })
+    }
+
+    let tableSmall;
+    if(this.state.txs && this.state.txs.length > 0) {
+      tableSmall = <SmallTransactionTable transactions={this.state.txs} handleRedirect={this.handleRedirect.bind(this)}/>;
+    }
+
+    let tableLarge;
+    if(this.state.txs && this.state.txs.length > 0) {
+      tableLarge = <table className="pure-table large">
+          <thead>
+            <tr>
+              <th>TXID</th>
+              <th># vin</th>
+              <th># vout</th>
+              <th>value</th>
+            </tr>
+          </thead>
+
+          <tbody className='navTable'>
+            {transactions}
+          </tbody>
+        </table>
     }
 
     let formattedBlockHeight;
@@ -202,20 +217,8 @@ class Block extends Component {
         </div>
 
         <h2 className='l-box'><i className="fas fa-exchange-alt" />  Transactions {transactionCount}</h2>
-        <table className="pure-table">
-          <thead>
-            <tr>
-              <th>TXID</th>
-              <th># vin</th>
-              <th># vout</th>
-              <th>value</th>
-            </tr>
-          </thead>
-
-          <tbody className='navTable'>
-            {transactions}
-          </tbody>
-        </table>
+        {tableSmall}
+        {tableLarge}
 
         <ReactPaginate
           previousLabel={"previous"}

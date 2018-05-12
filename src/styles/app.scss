@@ -513,19 +513,11 @@ table tbody.navTable tr:hover td, .Transaction table tbody .active td, .Transact
   .container {
     width: 545px;
   }
-  //
-  // .large {
-  //   display: none;
-  // }
 }
 
 @media only screen and (min-width: 768px) {
   .container {
     width: 750px;
-  }
-
-  .small {
-    display: none;
   }
 }
 
@@ -544,10 +536,10 @@ table tbody.navTable tr:hover td, .Transaction table tbody .active td, .Transact
   .container {
     width: 970px;
   }
-  //
-  // .small{
-  //   display: none;
-  // }
+
+  .small {
+    display: none;
+  }
 }
 
 @media (min-width: 1200px) {

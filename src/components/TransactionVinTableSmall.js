@@ -51,7 +51,7 @@ class TransactionVinTableSmall extends Component {
       });
     }
     return (
-      <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2 small">
+      <div className="l-box pure-u-1 small">
         <h3 className='content-subhead'><i className="fas fa-long-arrow-alt-down" /> Inputs</h3>
         <table className="pure-table">
           <thead>

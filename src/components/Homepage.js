@@ -63,14 +63,14 @@ class Homepage extends Component {
   handleSubmit(searchTerm, event) {
     if(searchTerm.length === 54 || searchTerm.length === 42 || searchTerm.length === 34) {
         this.props.history.push(`/address/${searchTerm}`)
-    } else {
+    } else if(searchTerm.length === 64) {
       this.props.bitbox.Transaction.details(searchTerm)
       .then((result) => {
         this.props.history.push(`/transaction/${searchTerm}`)
       }, (err) => {
         console.log('4', err);
       });
-
+    } else {
       this.props.bitbox.Blockchain.getBlockHash(searchTerm)
       .then((result) => {
         this.props.history.push(`/block/${searchTerm}`)
@@ -126,7 +126,7 @@ class Homepage extends Component {
             </p>
             <span className="input-icon-wrap">
               <form onSubmit={this.handleSubmit.bind(this, this.state.searchTerm)}>
-                <input id="form-name" onChange={this.handleInputChange.bind(this)} value={this.state.searchTerm} placeholder="SEARCH BLOCK/ADDRESS/TRANSACTION" type="text" className="pure-input-rounded input-with-icon" />
+                <input id="form-name" onChange={this.handleInputChange.bind(this)} value={this.state.searchTerm} placeholder="SEARCH BLOCK HEIGHT, ADDRESS or TRANSACTION" type="text" className="pure-input-rounded input-with-icon" />
               </form>
               <span className="input-icon"><i className="fas fa-search" /></span>
             </span>

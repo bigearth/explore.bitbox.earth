@@ -82,7 +82,7 @@ class TransactionVoutTableSmall extends Component {
     }
 
     return (
-      <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2 outputs small">
+      <div className="l-box pure-u-1 outputs small">
         <h3 className='content-subhead'><i className="fas fa-long-arrow-alt-up" /> Outputs</h3>
         <table className="pure-table">
           <thead>

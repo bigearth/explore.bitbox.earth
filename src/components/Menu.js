@@ -57,7 +57,7 @@ class Menu extends Component {
           searchTerm: ''
         });
         this.props.history.push(`/address/${searchTerm}`)
-    } else {
+    } else if(searchTerm.length === 64) {
       this.props.bitbox.Transaction.details(searchTerm)
       .then((result) => {
         this.setState({
@@ -67,7 +67,7 @@ class Menu extends Component {
       }, (err) => {
         console.log('4', err);
       });
-
+    } else {
       this.props.bitbox.Blockchain.getBlockHash(searchTerm)
       .then((result) => {
         this.setState({

@@ -9,6 +9,8 @@ import {FormattedNumber} from 'react-intl';
 import queryString from 'query-string';
 import TransactionVinTableLarge from './TransactionVinTableLarge';
 import TransactionVoutTableLarge from './TransactionVoutTableLarge';
+import TransactionVinTableSmall from './TransactionVinTableSmall';
+import TransactionVoutTableSmall from './TransactionVoutTableSmall';
 
 import "../styles/homepage.scss";
 
@@ -116,8 +118,15 @@ class Transaction extends Component {
 
 
     let transactionVinTableLarge;
+    let transactionVinTableSmall;
     if(this.state.vin.length > 0) {
       transactionVinTableLarge = <TransactionVinTableLarge
+        parsed={parsed}
+        bitbox={this.props.bitbox}
+        vin={this.state.vin}
+      />;
+
+      transactionVinTableSmall = <TransactionVinTableSmall
         parsed={parsed}
         bitbox={this.props.bitbox}
         vin={this.state.vin}
@@ -125,8 +134,17 @@ class Transaction extends Component {
     }
 
     let transactionVoutTableLarge;
+    let transactionVoutTableSmall;
     if(this.state.vout.length > 0) {
       transactionVoutTableLarge = <TransactionVoutTableLarge
+        parsed={parsed}
+        bitbox={this.props.bitbox}
+        vout={this.state.vout}
+        handleRedirect={this.handleRedirect.bind(this)}
+        txid={this.state.txid}
+      />;
+
+      transactionVoutTableSmall = <TransactionVoutTableSmall
         parsed={parsed}
         bitbox={this.props.bitbox}
         vout={this.state.vout}
@@ -155,6 +173,8 @@ class Transaction extends Component {
         <div className="pure-g">
           {transactionVinTableLarge}
           {transactionVoutTableLarge}
+          {transactionVinTableSmall}
+          {transactionVoutTableSmall}
         </div>
       </div>
     );

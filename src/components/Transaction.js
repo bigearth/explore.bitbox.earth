@@ -73,21 +73,6 @@ class Transaction extends Component {
   }
 
   handleRedirect(path) {
-    // let path;
-    // if(type === 'memo') {
-    //   if(action === 'setName' || action === 'like' || action === 'setProfileText' || action === 'follow' || action === 'unfollow') {
-    //     path = "https://memo.cash";
-    //   } else {
-    //     path = `https://memo.cash/post/${id}`;
-    //   }
-    // } else {
-    //   if(action === 'setName' || action === 'follow' || action === 'unfollow' || action === 'setProfileHeader' || action === 'createMediaPost' || 'setProfileAvatar') {
-    //     path = "https://www.blockpress.com/";
-    //   } else {
-    //     path = `https://www.blockpress.com/posts/${id}`;
-    //   }
-    // }
-
     this.setState({
       redirect: true,
       path: path

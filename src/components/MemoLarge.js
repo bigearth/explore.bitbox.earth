@@ -61,14 +61,14 @@ class MemoLarge extends Component {
           message: decoded[2].toString('ascii')
         };
         tr = [
-          <td className='cursor'><img src={'/assets/memo.jpg'} /></td>,
-          <td className='cursor'><span className='title'>{this.state.memo[index][2]}</span> <br />{obj.message}</td>,
-          <td className='cursor'></td>
+          <td className='cursor' key={index}><img src={'/assets/memo.jpg'} /></td>,
+          <td className='cursor' key={index+1}><span className='title'>{this.state.memo[index][2]}</span> <br />{obj.message}</td>,
+          <td className='cursor' key={index+2}></td>
         ];
       }
     });
     return (
-      <tr onClick={this.handleRedirect.bind(this, 'memo', obj.action)} key={this.props.key} className={this.props.active}>
+      <tr onClick={this.handleRedirect.bind(this, 'memo', obj.action)} className={this.props.active}>
         {tr}
       </tr>
     );

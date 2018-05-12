@@ -531,6 +531,10 @@ table tbody.navTable tr:hover td, .Transaction table tbody .active td, .Transact
 
 @media only screen and (max-width: 768px) {
 
+  .Block, .Address, .Transaction {
+    padding-top: 170px;
+  }
+
   .large{
     display: none;
   }
@@ -570,7 +574,7 @@ table tbody.navTable tr:hover td, .Transaction table tbody .active td, .Transact
   border: none;
 }
 
-.Block .l-box p, .Address .SmallTransactionTable .vout p {
+.Block .l-box p, .Address .SmallTransactionTable .vout p, .Transaction.container h2, .Transaction.container  {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

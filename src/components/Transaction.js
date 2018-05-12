@@ -5,9 +5,10 @@ import {
   Redirect,
   withRouter
 } from 'react-router-dom';
-import Slider from 'react-slick';
 import {FormattedNumber} from 'react-intl';
 import queryString from 'query-string';
+import TransactionVinTableLarge from './TransactionVinTableLarge';
+import TransactionVoutTableLarge from './TransactionVoutTableLarge';
 
 import "../styles/homepage.scss";
 
@@ -71,21 +72,21 @@ class Transaction extends Component {
     });
   }
 
-  handleRedirect(type, id, action) {
-    let path;
-    if(type === 'memo') {
-      if(action === 'setName' || action === 'like' || action === 'setProfileText' || action === 'follow' || action === 'unfollow') {
-        path = "https://memo.cash";
-      } else {
-        path = `https://memo.cash/post/${id}`;
-      }
-    } else {
-      if(action === 'setName' || action === 'follow' || action === 'unfollow' || action === 'setProfileHeader' || action === 'createMediaPost' || 'setProfileAvatar') {
-        path = "https://www.blockpress.com/";
-      } else {
-        path = `https://www.blockpress.com/posts/${id}`;
-      }
-    }
+  handleRedirect(path) {
+    // let path;
+    // if(type === 'memo') {
+    //   if(action === 'setName' || action === 'like' || action === 'setProfileText' || action === 'follow' || action === 'unfollow') {
+    //     path = "https://memo.cash";
+    //   } else {
+    //     path = `https://memo.cash/post/${id}`;
+    //   }
+    // } else {
+    //   if(action === 'setName' || action === 'follow' || action === 'unfollow' || action === 'setProfileHeader' || action === 'createMediaPost' || 'setProfileAvatar') {
+    //     path = "https://www.blockpress.com/";
+    //   } else {
+    //     path = `https://www.blockpress.com/posts/${id}`;
+    //   }
+    // }
 
     this.setState({
       redirect: true,
@@ -128,195 +129,25 @@ class Transaction extends Component {
         //   {transactions}
         // </tbody>
 
-    let vinBody = [];
-    if(this.state.vin) {
-      this.state.vin.forEach((v, ind) => {
-        if(v.coinbase) {
-          vinBody.push(
-            <tr key={ind} className={parsed.input && parsed.input == ind ? "active" : ""}>
-              <td>Coinbase</td>
-              <td>No Inputs</td>
-              <td></td>
-              <td></td>
-            </tr>
-          );
-        } else {
-          vinBody.push(
-            <tr key={ind} className={parsed.input && parsed.input == ind ? "active" : ""}>
-              <td>
-                <Link
-                  to={`/transaction/${v.txid}`}>
-                  <i className="fas fa-chevron-left" />
-                </Link>
-              </td>
-              <td>
-               <FormattedNumber maximumFractionDigits={8} value={this.props.bitbox.BitcoinCash.toBitcoinCash(v.value)}/>
-              </td>
-              <td>
-                <Link
-                  to={`/address/${v.cashAddress}`}>
-                  {this.props.bitbox.Address.toCashAddress(v.cashAddress, false)}
-                </Link>
-              </td>
-              <td>
-              {v.n}
-              </td>
-            </tr>
-          );
-        }
-      });
-    }
 
-    let vinTable;
+    let transactionVinTableLarge;
     if(this.state.vin.length > 0) {
-      vinTable = <table className="pure-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th><i className="fab fa-bitcoin" /> Value</th>
-            <th><i className="fas fa-qrcode" /> Address</th>
-            <th>#</th>
-          </tr>
-        </thead>
-        <tbody>
-          {vinBody}
-        </tbody>
-      </table>;
+      transactionVinTableLarge = <TransactionVinTableLarge
+        parsed={parsed}
+        bitbox={this.props.bitbox}
+        vin={this.state.vin}
+      />;
     }
 
-    let voutBody = [];
-    if(this.state.vout) {
-      this.state.vout.forEach((v, ind) => {
-        let output;
-        let nulldata;
-        if(v.scriptPubKey.addresses && v.scriptPubKey.addresses.length > 0) {
-          output = <Link
-            to={`/address/${this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0])}`}>
-            {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0], false)}
-          </Link>;
-        } else {
-          let op = v.scriptPubKey.asm;
-
-          let memo = {
-            setName: ['6d01', 365, 'Set Name'],
-            postMemo: ['6d02', 621, 'Post Memo'],
-            reply: ['6d03', 877, 'Reply'],
-            like: ['6d04', 1133, 'Like'],
-            setProfileText: ['6d05', 1389, 'Set Profile Text'],
-            follow: ['6d06', 1645, 'Follow'],
-            unfollow: ['6d07', 1901, 'Unfollow'],
-            postTopicMessage: ['6d0C', 3181, 'Post Topic Message']
-          }
-
-          let blockpress = {
-            setName: ['8d01', 397, 'Set Name'],
-            createTextPost: ['8d02', 653, 'Create Text Post'],
-            reply: ['8d03', 909, 'Reply'],
-            like: ['8d04', 1165, 'Like'],
-            follow: ['8d06', 1677, 'Follow'],
-            unfollow: ['8d07', 1933, 'Unfollow'],
-            setProfileHeader: ['8d08', 2189, 'Set Profile Header'],
-            createMediaPost: ['8d09', 2445, 'Create Media Post'],
-            setProfileAvatar: ['8d10', 4237, 'Set Profile Avatar'],
-            createPostInCommunity: ['8d11', 4493, 'Create Post in Community']
-          }
-
-          let split = op.split(" ");
-          let prefix = +split[1];
-          let memoKeys = Object.keys(memo);
-          let memoVals = Object.values(memo);
-          let blockpressKeys = Object.keys(blockpress);
-          let blockpressVals = Object.values(blockpress);
-          let obj;
-          memoVals.forEach((val, index) => {
-            if(prefix === val[1]) {
-              let asm
-              if(prefix === 877) {
-                asm = `${split[0]} ${memoVals[index][0]} ${split[3]}`;
-              } else {
-                asm = `${split[0]} ${memoVals[index][0]} ${split[2]}`;
-              }
-              let fromASM = this.props.bitbox.Script.fromASM(asm)
-              let decoded = this.props.bitbox.Script.decode(fromASM)
-              obj = {
-                asm: asm,
-                prefix: memoVals[index][0],
-                action: memoKeys[index],
-                message: decoded[2].toString('ascii')
-              };
-              nulldata = <tr onClick={this.handleRedirect.bind(this, 'memo', this.state.id, obj.action)} key={ind+1} className={parsed.output && parsed.output == ind ? "active" : ""}>
-                  <td className='cursor'><img src={'/assets/memo.jpg'} /></td>
-                  <td className='cursor'><span className='title'>{memoVals[index][2]}</span> <br />{obj.message}</td>
-                  <td className='cursor'>
-                  </td>
-                </tr>
-            }
-          });
-          blockpressVals.forEach((val, index) => {
-            if(prefix === val[1]) {
-              let asm
-              if(prefix === 2445) {
-                asm = `${split[0]} ${blockpressVals[index][0]} ${split[3]}`;
-              } else if(prefix === 4493) {
-                asm = `${split[0]} ${blockpressVals[index][0]} ${split[3]}`;
-              } else {
-                asm = `${split[0]} ${blockpressVals[index][0]} ${split[2]}`;
-              }
-
-              let fromASM = this.props.bitbox.Script.fromASM(asm)
-              let decoded = this.props.bitbox.Script.decode(fromASM)
-              obj = {
-                asm: asm,
-                prefix: blockpressVals[index][0],
-                action: blockpressKeys[index],
-                message: decoded[2].toString('ascii')
-              };
-              let data;
-              if(obj.action === 'setProfileHeader' || obj.action === 'setProfileAvatar') {
-                data = <img src={obj.message} />;
-              } else {
-                data = obj.message;
-              }
-              nulldata = <tr onClick={this.handleRedirect.bind(this, 'blockpress', this.state.id, obj.action)} key={ind+2} className={parsed.output && parsed.output == ind ? "active" : ""}>
-                  <td className='cursor'><img src={'/assets/blockpress.jpg'} /></td>
-                  <td className='cursor'><span className='title'>{blockpressVals[index][2]}</span> <br />{data}</td>
-                  <td className='cursor'>
-                  </td>
-                </tr>
-            }
-          });
-          output = obj.asm;
-        }
-
-        voutBody.push(
-          <tr key={ind} className={parsed.output && parsed.output == ind ? "active" : ""}>
-            <td>{v.n}</td>
-            <td className='address'>{output}</td>
-            <td>
-              <FormattedNumber maximumFractionDigits={8} value={v.value}/>
-            </td>
-          </tr>
-        );
-        if(nulldata) {
-          voutBody.push(nulldata);
-        }
-      });
-    }
-
-    let voutTable;
+    let transactionVoutTableLarge;
     if(this.state.vout.length > 0) {
-      voutTable = <table className="pure-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th><i className="fas fa-qrcode" /> Address</th>
-            <th><i className="fab fa-bitcoin" /> Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {voutBody}
-        </tbody>
-      </table>;
+      transactionVoutTableLarge = <TransactionVoutTableLarge
+        parsed={parsed}
+        bitbox={this.props.bitbox}
+        vout={this.state.vout}
+        handleRedirect={this.handleRedirect.bind(this)}
+        txid={this.state.txid}
+      />;
     }
 
     return (
@@ -337,14 +168,8 @@ class Transaction extends Component {
           </div>
         </div>
         <div className="pure-g">
-          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2">
-            <h3 className='content-subhead'><i className="fas fa-long-arrow-alt-down" /> Inputs</h3>
-            {vinTable}
-          </div>
-          <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2 outputs">
-            <h3 className='content-subhead'><i className="fas fa-long-arrow-alt-up" /> Outputs</h3>
-            {voutTable}
-          </div>
+          {transactionVinTableLarge}
+          {transactionVoutTableLarge}
         </div>
       </div>
     );

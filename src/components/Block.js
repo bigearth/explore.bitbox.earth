@@ -6,7 +6,6 @@ import {
   withRouter
 } from 'react-router-dom';
 
-import Slider from 'react-slick';
 import ReactPaginate from 'react-paginate';
 import SmallTransactionTable from './SmallTransactionTable';
 import {FormattedNumber} from 'react-intl';

@@ -66,10 +66,15 @@ class TransactionVoutTableSmall extends Component {
           }
         }
 
+        let times;
+        if(v.spentTxId !== null) {
+          times = <i className="fas fa-times" />;
+        }
         voutBody.push(
           <tr key={ind} className={this.props.parsed.output && this.props.parsed.output == ind ? "active" : ""}>
             <td>{v.n}</td>
             <td className='address'>{output}</td>
+            <td className='address'>{times}</td>
             <td>
               <FormattedNumber maximumFractionDigits={8} value={v.value}/>
             </td>
@@ -89,6 +94,7 @@ class TransactionVoutTableSmall extends Component {
             <tr>
               <th>#</th>
               <th><i className="fas fa-qrcode" /> Address</th>
+              <th>S?</th>
               <th><i className="fab fa-bitcoin" /> Value</th>
             </tr>
           </thead>

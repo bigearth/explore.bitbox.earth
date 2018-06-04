@@ -14,6 +14,12 @@ import {FormattedNumber} from 'react-intl';
 
 import "../styles/homepage.scss";
 
+
+let memopress = require('memopress');
+let test = memopress.encode('0x6d01', 'nakamoto')
+console.log("test");
+console.log(test);
+
 class TransactionVoutTableLarge extends Component {
   handleRedirect(path) {
     this.props.handleRedirect(path);

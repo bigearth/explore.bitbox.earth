@@ -9,7 +9,7 @@ import {
   NavLink
 } from 'react-router-dom';
 
-let BITBOXCli = require('bitbox-cli/lib/bitboxcli').default;
+let BITBOXCli = require('bitbox-cli/lib/bitbox-cli').default;
 let BITBOX = new BITBOXCli({
   protocol: 'https',
   host: "138.68.54.100",

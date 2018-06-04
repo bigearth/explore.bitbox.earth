@@ -22,6 +22,7 @@ class MemoLarge extends Component {
   }
 
   render() {
+    console.log("this.props")
     console.log(this.props)
       // <tr onClick={this.handleRedirect.bind(this, this.props.decoded.service, this.props.decoded.action)} className={this.props.active}>
       //   <td className='cursor'><img src={'/assets/memo.jpg'} /></td>,
@@ -30,8 +31,8 @@ class MemoLarge extends Component {
       // </tr>
     return (
       <tr onClick={this.handleRedirect.bind(this, this.props.decoded.service, this.props.decoded.action)} className={this.props.active}>
-        <td className='cursor'><img src={'/assets/memo.jpg'} /></td>
-        <td className='cursor'></td>
+        <td className='cursor'><img src={`/assets/${this.props.decoded.service}.jpg`} /></td>
+        <td className='cursor'>{this.props.decoded.message}</td>
         <td className='cursor'></td>
       </tr>
     );

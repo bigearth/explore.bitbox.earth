@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import moment from 'moment';
+let memopress = require('memopress');
+
 import {
   Link,
   Redirect,
@@ -30,6 +31,7 @@ class TransactionVoutTableLarge extends Component {
     let voutBody = [];
     if(this.props.vout) {
       this.props.vout.forEach((v, ind) => {
+        console.log(ind)
         let output;
         let largeNullData;
         if(v.scriptPubKey.addresses && v.scriptPubKey.addresses.length > 0) {
@@ -38,49 +40,56 @@ class TransactionVoutTableLarge extends Component {
             {this.props.bitbox.Address.toCashAddress(v.scriptPubKey.addresses[0], false)}
           </Link>;
         } else {
+
           let op = v.scriptPubKey.asm;
+          let decoded = memopress.decode(op);
 
-          let memoPrefixes = [365, 621, 877, 1133, 1389, 1645, 1901, 3181];
-          let blockpressPrefixes = [397, 653, 909, 1165, 1677, 1933, 2189, 2445, 4237, 4493];
-
-          let split = op.split(" ");
-          let prefix = +split[1];
-          if(_.includes(memoPrefixes, prefix)){
-            largeNullData = <MemoLarge
-              handleRedirect={this.handleRedirect.bind(this)}
-              active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
-              parsed={this.props.parsed}
-              key={ind+1}
-              split={split}
-              prefix={prefix}
-              bitbox={this.props.bitbox}
-              txid={this.props.txid}
-            />
-          }
-
-          if(_.includes(blockpressPrefixes, prefix)){
-            largeNullData = <BlockpressLarge
-              handleRedirect={this.handleRedirect.bind(this)}
-              active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
-              parsed={this.props.parsed}
-              key={ind+2}
-              split={split}
-              prefix={prefix}
-              bitbox={this.props.bitbox}
-              txid={this.props.txid}
-            />
-          }
+          largeNullData = <MemoLarge
+            handleRedirect={this.handleRedirect.bind(this)}
+            active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
+            parsed={this.props.parsed}
+            key={ind+1}
+            decoded={decoded}
+            bitbox={this.props.bitbox}
+            txid={this.props.txid}
+          />
+          // if(_.includes(memoPrefixes, prefix)){
+          //   console.log()
+          //   largeNullData = <MemoLarge
+          //     handleRedirect={this.handleRedirect.bind(this)}
+          //     active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
+          //     parsed={this.props.parsed}
+          //     key={ind+1}
+          //     split={split}
+          //     prefix={prefix}
+          //     bitbox={this.props.bitbox}
+          //     txid={this.props.txid}
+          //   />
+          // }
+          //
+          // if(_.includes(blockpressPrefixes, prefix)){
+          //   largeNullData = <BlockpressLarge
+          //     handleRedirect={this.handleRedirect.bind(this)}
+          //     active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
+          //     parsed={this.props.parsed}
+          //     key={ind+2}
+          //     split={split}
+          //     prefix={prefix}
+          //     bitbox={this.props.bitbox}
+          //     txid={this.props.txid}
+          //   />
+          // }
         }
 
-        let times;
+        let spent;
         if(v.spentTxId !== null) {
-          times = <i className="fas fa-times" />;
+          spent = <i className="fas fa-times" />;
         }
         voutBody.push(
           <tr key={ind} className={this.props.parsed.output && this.props.parsed.output == ind ? "active" : ""}>
             <td>{v.n}</td>
             <td className='address'>{output}</td>
-            <td className='address'>{times}</td>
+            <td className='address'>{spent}</td>
             <td>
               <FormattedNumber maximumFractionDigits={8} value={v.value}/>
             </td>
@@ -92,6 +101,7 @@ class TransactionVoutTableLarge extends Component {
       });
     }
 
+    console.log(voutBody)
     return (
       <div className="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-2 outputs large">
         <h3 className='content-subhead'><i className="fas fa-long-arrow-alt-up" /> Outputs</h3>

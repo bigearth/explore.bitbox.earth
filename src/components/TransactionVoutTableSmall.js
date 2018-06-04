@@ -38,18 +38,29 @@ class TransactionVoutTableSmall extends Component {
 
           let split = op.split(" ");
           let prefix = +split[1];
-          if(_.includes(memoPrefixes, prefix)){
-            largeNullData = <MemoLarge
-              handleRedirect={this.handleRedirect.bind(this)}
-              active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
-              parsed={this.props.parsed}
-              key={ind+1}
-              split={split}
-              prefix={prefix}
-              bitbox={this.props.bitbox}
-              txid={this.props.txid}
-            />
-          }
+
+          largeNullData = <MemoLarge
+            handleRedirect={this.handleRedirect.bind(this)}
+            active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
+            parsed={this.props.parsed}
+            key={ind+1}
+            decoded={decoded}
+            bitbox={this.props.bitbox}
+            txid={this.props.txid}
+          />
+
+          // if(_.includes(memoPrefixes, prefix)){
+          //   largeNullData = <MemoLarge
+          //     handleRedirect={this.handleRedirect.bind(this)}
+          //     active={this.props.parsed.output && this.props.this.props.parsed.output == ind ? "active" : ""}
+          //     parsed={this.props.parsed}
+          //     key={ind+1}
+          //     split={split}
+          //     prefix={prefix}
+          //     bitbox={this.props.bitbox}
+          //     txid={this.props.txid}
+          //   />
+          // }
 
           if(_.includes(blockpressPrefixes, prefix)){
             largeNullData = <BlockpressLarge

@@ -47,6 +47,7 @@ class TransactionVoutTableLarge extends Component {
             bitbox={this.props.bitbox}
             txid={this.props.txid}
           />
+          
           // if(_.includes(memoPrefixes, prefix)){
           //   console.log()
           //   largeNullData = <MemoLarge
